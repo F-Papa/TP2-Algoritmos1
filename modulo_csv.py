@@ -1,7 +1,7 @@
 import csv
 import datetime
 
-path_archivo = 'C:\\Users\\franc\\source\\repos\\SMN TP\\weatherdata--389-603.csv'   #El archivo debe estar en el mismo directorio que el codigo fuente.
+path_archivo = 'C:\\Users\\franc\\source\\repos\\SMN TP\\weatherdata--389-603.csv'   #Aca va el directorio del archivo
 
 def lista_a_int(lista):
     """Pre-Condicion: Recibe un numero como lista de digitos
