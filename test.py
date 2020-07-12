@@ -13,8 +13,7 @@ def verificador(ruta):
     return ruta
 
 
-def contador_pixel(pixeles_totales,rojo,magenta,ruta):
-    im = Image.open(ruta)
+def contador_pixel(pixeles_totales,rojo,magenta,ruta,im):
     borde = (0,20,57,60)
     im = ImageOps.crop(im, borde )#recorto la imagen
     #el getdata me da una tupla rgb por cada pixel
@@ -28,6 +27,13 @@ def contador_pixel(pixeles_totales,rojo,magenta,ruta):
     pixeles = [magenta,rojo,pixeles_totales]
     
     return pixeles
+
+def png_jpg(ruta):
+    im = Image.open(ruta)
+    im = im.convert('RGB')
+    ruta = "imagen.jpg"
+    im.save(ruta)
+    return im
         
 def main ():
     opcion = 0
@@ -43,7 +49,9 @@ def main ():
             ruta = ""
             ruta = input("Nombre imagen: ")
             ruta = verificador(ruta)
-            print(contador_pixel(pixeles_totales,rojo,magenta,ruta))
+            if ruta.find("png") != -1:
+                im = png_jpg(ruta)
+            print(contador_pixel(pixeles_totales,rojo,magenta,ruta,im))
             
     
 main()
