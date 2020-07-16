@@ -75,14 +75,12 @@ def actual(nombre_archivo):
                               "Velocidad_del_viento": elemento_json[i]["weather"]["wind_speed"]})
     return info
 
-    def buscar_ubicacion(lista, latitud, longitud, ciudad):
-    """"En base a la información de latitud y longitud o ciudad, busca en una lista si se encuentra el elemento determinado.
-    Precondición: 1. Lista con el prónostico extendido
-                  2. Latitud del lugar de interés (opcional)
-                  3. Longitud del lugar de interés (opcional)
-                  4. En caso de no conocer la latidud y la logitud, es necesaria la ciudad.
-    Postcondición: Un diccionario con la información brindada."""
-    
+def buscar_ubicacion(lista, latitud, longitud, ciudad):
+    """En base a la información de latitud y longitud o ciudad, busca en una lista si se encuentra el elemento determinado.
+       Precondición: 1. Lista con el prónostico extendido
+                     2. Latitud del lugar de interés (opcional)
+                     3. Longitud del lugar de interés (opcional)
+                     4. En caso de no conocer la latidud y la logitud, es necesaria la ciudad."""
     for elemento in lista:
         if latitud == "0":
             if elemento["Ciudad"] == ciudad:
