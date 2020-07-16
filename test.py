@@ -1,4 +1,28 @@
 import requests
+import json
+
+def solicitar_usuario():
+    """Le solicita al usuario los datos de úbicación"""
+    
+    respuesta = input("¿Conoces la latitud y la logitud de la ciudad que querés ver el clima? S/N ").upper()
+    if respuesta == "S":
+        lat = input("Por favor, ingresa la latitud en el formato 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+        lon = input("Por favor, ingresa la longitud en el formato 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+        ciudad = ""
+        while (len(lat) < 6 or len(lon) < 6) and lat != "0" and lon != "0":
+            if len(lat) < 6 and lat != "1":
+                lat = input("La latitud ingresada es invalida. Recorda que el formato es 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+            elif len(lon) < 6 and lon !="1":   
+                lon = input("La longitud ingresada es invalida. Recorda que el formato es 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+            else:
+                lat="0"
+                lon="0"
+                ciudad = input("En ese caso, ¿podrías indicarnos qué ciudad te gustaría conocer su estado actual? ").title()
+    else:
+        lat="0"
+        lon="0"
+        ciudad = input("En ese caso, ¿podrías indicarnos qué ciudad te gustaría conocer su estado actual? ").title()
+    return [lat,lon,ciudad]
 
 def smn_request(diccionario):
     '''Extrae la información de SMN y, si no existe, genera un archivo para cada uno de los servicios para almacenar 
@@ -77,6 +101,13 @@ def main():
               'pronostico_3dia':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
     
+    #Solicitud del ingreso de datos al usuario
+    ingreso = solicitar_usuario()
+    lat = ingreso[0]
+    lon = ingreso[1]
+    ciudad = ingreso[2]
+    
+    #Crea los archivos .txt que de los cuales se extraerá la información necesaria
     smn_request(urls_smn)
 
 main()
