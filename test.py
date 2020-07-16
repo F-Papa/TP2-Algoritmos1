@@ -31,6 +31,25 @@ def extendido(nombre_archivo):
                              "Temperatura_tarde": elemento_json[i]["weather"]["afternoon_temp"],
                              "Descripción_tarde": elemento_json[i]["weather"]["afternoon_desc"]})
     return info
+
+def actual(nombre_archivo):
+    info = []
+    with open(nombre_archivo +".txt", "r", encoding="utf-8") as archivo:
+        data = archivo.readlines()
+        for elemento in data:
+            elemento_json = json.loads(elemento)
+            for i in range(len(elemento_json)):
+                info.append({ "Ciudad": elemento_json[i]["name"],
+                              "Provincia":elemento_json[i]["province"],
+                              "Latitud": elemento_json[i]["lat"],
+                              "Longitud": elemento_json[i]["lon"],
+                              "Humedad": elemento_json[i]["weather"]["humidity"],
+                              "Presión": elemento_json[i]["weather"]["pressure"],
+                              "Temperatura": elemento_json[i]["weather"]["temp"],
+                              "Sensasión_Térmica": elemento_json[i]["weather"]["st"],
+                              "Visibilidad": elemento_json[i]["weather"]["visibility"],
+                              "Velocidad_del_viento": elemento_json[i]["weather"]["wind_speed"]})
+    return info
         
 
 def main():
