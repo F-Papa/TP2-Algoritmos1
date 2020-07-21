@@ -45,12 +45,12 @@ def alertas(nombre_archivo):
         for elemento in data:
             elemento_json = json.loads(elemento)
             for i in range(len(elemento_json)):
-                alertas.append({"Descripcion_Corta": elemento_json[i]["title"],
+                info.append({"Descripcion_Corta": elemento_json[i]["title"],
                                 "Fecha": elemento_json[i]["date"],
                                 "Descripción": elemento_json[i]["description"],
                                 "Severidad": elemento_json[i]["severity"],})
                 for j in range(len(elemento_json[i]["zones"])):
-                    alertas[i]["Zona " + str(j+1)] = elemento_json[i]["zones"][str(j)]
+                    info[i]["Zona " + str(j+1)] = elemento_json[i]["zones"][str(j)]
     return info
 
 def extendido(nombre_archivo):
