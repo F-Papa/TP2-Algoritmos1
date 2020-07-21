@@ -35,6 +35,24 @@ def smn_request(diccionario):
         with open(nombre, 'wb') as archivo:
             archivo.write(resp.content)
 
+def alertas(nombre_archivo):
+    """Generá una lista con los datos necesarios de cada una de las aertas incluidas en archivo de alertas. 
+    Precondición: El nombre del archivo que se desea procesar"""
+    
+    info = []
+    with open(nombre_archivo+".txt", "r", encoding="utf-8") as archivo:
+        data = archivo.readlines()
+        for elemento in data:
+            elemento_json = json.loads(elemento)
+            for i in range(len(elemento_json)):
+                alertas.append({"Descripcion_Corta": elemento_json[i]["title"],
+                                "Fecha": elemento_json[i]["date"],
+                                "Descripción": elemento_json[i]["description"],
+                                "Severidad": elemento_json[i]["severity"],})
+                for j in range(len(elemento_json[i]["zones"])):
+                    alertas[i]["Zona " + str(j+1)] = elemento_json[i]["zones"][str(j)]
+    return info
+
 def extendido(nombre_archivo):
     """Generá una lista con los datos necesarios de cada una de las ciudades incluidas en los archivos relacionados con el
     pronóstico extendido. 
@@ -57,6 +75,8 @@ def extendido(nombre_archivo):
     return info
 
 def actual(nombre_archivo):
+    """Generá una lista con los datos necesarios de cada una de las ciudades incluidas en los archivo actual. 
+    Precondición: El nombre del archivo que se desea procesar"""
     info = []
     with open(nombre_archivo +".txt", "r", encoding="utf-8") as archivo:
         data = archivo.readlines()
