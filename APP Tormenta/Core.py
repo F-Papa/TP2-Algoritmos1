@@ -51,6 +51,47 @@ def print_opciones():
 def print_bienvenida():
     print("Bienvenido a Tormenta")
 
+def imprimir_extendido(lista, latitud, longitud, ciudad):
+    """Imprime el pronóstico extendido de la ciudad seleccionada
+       Precondición: Una lista que contenga el nombre de los archivos que contienen la información del pronóstico extendido;
+                     Latitud y Longitud o Ciudad otorgados por el usuario."""
+    
+    dia_1 = buscar_ubicacion(extendido(lista[0]), latitud, longitud, ciudad)
+    dia_2 = buscar_ubicacion(extendido(lista[1]), latitud, longitud, ciudad)
+    dia_3 = buscar_ubicacion(extendido(lista[2]), latitud, longitud, ciudad)
+    teperatura_1dia = str(dia_1["Temperatura_mañana"])+"°C/"+str(dia_1["Temperatura_tarde"])+"°C"
+    teperatura_2dia = str(dia_2["Temperatura_mañana"])+"°C/"+str(dia_2["Temperatura_tarde"])+"°C"
+    teperatura_3dia = str(dia_3["Temperatura_mañana"])+"°C/"+str(dia_3["Temperatura_tarde"])+"°C"
+
+    print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format("Ciudad","1 día: Mañana/Tarde",
+                                                         "2 días: Mañana/Tarde", "3 días: Mañana/Tarde"))
+    print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format(dia_1["Ciudad"],teperatura_1dia, teperatura_2dia, teperatura_3dia))
+    
+        
+def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
+    """Imprime el pronóstico extendido de la ciudad seleccionada
+       Precondición: nombre del archivo que contiene el clima actual;
+                     Latitud y Longitud o Ciudad otorgados por el usuario."""
+    
+    clima_actual = buscar_ubicacion(actual(nombre_archivo), latitud, longitud, ciudad)
+    recomendacion = ""
+    if clima_actual["Temperatura"] < 10:
+        recomendacion = "Hoy va a hacer frío. Recuerden, llevar abrigo."
+    elif clima_actual["Temperatura"] < 15: 
+        recomendacion = "Hoy va a hacer día fresco. No descuidarse."
+    elif clima_actual["Temperatura"] < 20:
+        recomendacion = "Hoy va a hacer día lindo para pasear. Disfruten el día."
+    elif clima_actual["Temperatura"] < 30:
+        recomendacion = "Hoy va a hacer día caluroso. Cuidense del sol."
+    else:
+        recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para avitar golpes de calor."
+    print("El teperatura actual en {} es: {}°C. La visibilidad es de {}km y la velovidad del viento es de {}km/m.\n{}".format(clima_actual["Ciudad"], 
+                                                                                                                              clima_actual["Temperatura"], 
+                                                                                                                              clima_actual["Visibilidad"], 
+                                                                                                                              clima_actual["Velocidad_del_viento"],
+                                                                                                                              recomendacion))
+                 
+
 def main():
     print_bienvenida()
     desea_salir = False
