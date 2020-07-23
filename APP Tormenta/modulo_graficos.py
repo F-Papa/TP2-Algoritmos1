@@ -8,9 +8,6 @@ class Color:                     #Se crea una clase para poder acceder a sus mie
     REVERSE = "\033[;7m"
     ARCOIRIS = "ARCOIRIS"
 
-
-colores = [Color.ROJO, Color.AZUL, Color.CYAN, Color.VERDE, Color.RESET]  #Se elije usar una lista para poder recorrerla con un indice, cosa que el diccionario no permite.
-
 def get_max_min(valores):
     """ Pre-Condicion: Recibe una iterable con elementos numericos
         Post-Condicion: Devuelve una tupla del modo (valor_maximo, valor_minimo)"""
@@ -32,13 +29,16 @@ def get_max_min(valores):
     
     return (max, min)
 
-def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", flag_color = Color.RESET):
+def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", color = Color.RESET):
     """Pre-Condicion: Recibe a las listas eje_vertical (cualquier tipo) y eje_horizontal (numerico). El usuario tiene la opcion
-    de ingresar un sufijo/unidad (unidad_medicion) y una bandera de color (Color.ROJO, Color.AZUL, Color.CYAN, Color.VERDE, Color.ARCOIRIS, Color.RESET).
+    de agregar un sufijo/unidad (unidad_medicion) y un color (Color.ROJO, Color.AZUL, Color.CYAN, Color.VERDE, Color.ARCOIRIS, Color.RESET).
     Post-Condicion: Imprime un grafico de barras con los datos ingresados en el color deseado. Si se ingreso una unidad de medicion, esta aparece despues de cada valor.
     Si los valores ingresados son compatibles entre si devuelve 1, en caso contrario devuelve 0 y no se imprime ningun gráfico"""    
+    
+    colores = [Color.ROJO, Color.AZUL, Color.CYAN, Color.VERDE, Color.RESET]  #Se elije usar una lista para poder recorrerla con un indice, cosa que el diccionario no permite.
 
     if len(eje_horizontal) != len(eje_vertical):    #No se puede graficar pues el eje vertical y el eje x no tienen la misma cantidad de elementos
+        print("error")
         return 0
     
     max_min = get_max_min(eje_horizontal)
@@ -48,14 +48,14 @@ def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", flag_colo
 
     for j in range(len(eje_horizontal)):
 
-        #Interpretacion flag color
-        if flag_color == "ARCOIRIS":
+        #Interpretacion color
+        if color == "ARCOIRIS":
             if i < len(colores)-1:
                 i+=1
             else:
                 i=0     
         else:
-            i = colores.index(flag_color)  
+            i = colores.index(color)  
 
         #Activa el color        
         print(colores[i], end= "") 
