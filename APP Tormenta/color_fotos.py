@@ -51,7 +51,7 @@ def lat_long(coordenadas):
     return corte, punto
 
 def buscar_provincia(recorte_provincias,corte_punto):
-    '''con el recorte de de 2px a la redonda define en que provincia esta'''
+    '''con el recorte de de 2px  a la redonda y los recortes de cada provincia define en que provincia esta'''
     provincia = ()
     for recorte in recorte_provincias.items():
         if recorte[1][0] < corte_punto[1][0] and  recorte[1][1] < corte_punto[1][1] and  recorte[1][2] < corte_punto[1][2] and  recorte[1][3] < corte_punto[1][3]:
