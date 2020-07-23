@@ -182,7 +182,9 @@ def main():
         elif eleccion == "4":
             coordenadas = ()
             lat_f = lat
+            lat_f = lat_f * -1
             long_f = long
+            long_f = long_f * -1
             coordenadas = (lat_f,long_f)
            
             a = 1
