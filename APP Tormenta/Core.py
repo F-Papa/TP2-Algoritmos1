@@ -102,9 +102,18 @@ def main():
               'pronostico_2dias':'https://ws.smn.gob.ar/map_items/forecast/2',
               'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
-        
+    
+    smn.smn_request(urls_smn)    
     print_bienvenida()
     desea_salir = False
+    #Solicitud de datos de latitud y longitud o ciudad al usuario
+    ingreso = solicitar_usuario()
+    lat = ingreso[0]
+    lon = ingreso[1]
+    ciudad = ingreso[2]
+    #Imprimir pronóstico actual
+    
+    imprimir_actual("actual", lat, lon, ciudad)
     
     while not desea_salir:
         eleccion = menu()
@@ -142,8 +151,11 @@ def main():
             a = 1
             #...
         elif eleccion == "3":
+            #Imprimir pronóstico extendido
             a = 1
-            #...
+            archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
+            imprimir_extendido(archivos_extendido, lat, lon, ciudad)
+            
         elif eleccion == "4":
             a = 1
             #...
