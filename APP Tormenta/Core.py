@@ -5,6 +5,8 @@ import modulo_proceso_smn as smn
 import color_fotos as analisis
 
 def analisis_foto(coordenadas):
+    '''necesita la tupla coordenadas para y teniendo los recortes de las provincias devuelve
+    por zona las alerta de lluvia, al ususario se le pide el ingreso del nombre de una imagen la cual es la que se analiza'''
     nombre = ""
     tamaño = 0
     rojo = 0
