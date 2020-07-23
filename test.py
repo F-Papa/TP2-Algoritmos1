@@ -109,14 +109,47 @@ def buscar_ubicacion(lista, latitud, longitud, ciudad):
             return elemento
         
 
+def imprimir_extendido(lista, latitud, longitud, ciudad):
+    dia_1 = buscar_ubicacion(extendido(lista[0]), latitud, longitud, ciudad)
+    dia_2 = buscar_ubicacion(extendido(lista[1]), latitud, longitud, ciudad)
+    dia_3 = buscar_ubicacion(extendido(lista[2]), latitud, longitud, ciudad)
+    teperatura_1dia = str(dia_1["Temperatura_mañana"])+"°C/"+str(dia_1["Temperatura_tarde"])+"°C"
+    teperatura_2dia = str(dia_2["Temperatura_mañana"])+"°C/"+str(dia_2["Temperatura_tarde"])+"°C"
+    teperatura_3dia = str(dia_3["Temperatura_mañana"])+"°C/"+str(dia_3["Temperatura_tarde"])+"°C"
+
+    print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format("Ciudad","1 día: Mañana/Tarde",
+                                                         "2 días: Mañana/Tarde", "3 días: Mañana/Tarde"))
+    print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format(dia_1["Ciudad"],teperatura_1dia, teperatura_2dia, teperatura_3dia))
+    
+        
+def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
+    clima_actual = buscar_ubicacion(actual(nombre_archivo), latitud, longitud, ciudad)
+    recomendacion = ""
+    if clima_actual["Temperatura"] < 10:
+        recomendacion = "Hoy va a hacer frío. Recuerden, llevar abrigo."
+    elif clima_actual["Temperatura"] < 15: 
+        recomendacion = "Hoy va a hacer día fresco. No descuidarse."
+    elif clima_actual["Temperatura"] < 20:
+        recomendacion = "Hoy va a hacer día lindo para pasear. Disfruten el día."
+    elif clima_actual["Temperatura"] < 30:
+        recomendacion = "Hoy va a hacer día caluroso. Cuidense del sol."
+    else:
+        recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para avitar golpes de calor."
+    print("El teperatura actual en {} es: {}°C. La visibilidad es de {}km y la velovidad del viento es de {}km/m.\n{}".format(clima_actual["Ciudad"], 
+                                                                                                                              clima_actual["Temperatura"], 
+                                                                                                                              clima_actual["Visibilidad"], 
+                                                                                                                              clima_actual["Velocidad_del_viento"],
+                                                                                                                              recomendacion))
+                 
+
 def main():
     urls_smn= {'actual':'https://ws.smn.gob.ar/map_items/weather',
               'especiales':'https://ws.smn.gob.ar/alerts/type/IE',
               'corto_plazo':'https://ws.smn.gob.ar/alerts/type/AC',
               'alertas':'https://ws.smn.gob.ar/alerts/type/AL',
               'pronostico_1dia':'https://ws.smn.gob.ar/map_items/forecast/1',
-              'pronostico_2dia':'https://ws.smn.gob.ar/map_items/forecast/2',
-              'pronostico_3dia':'https://ws.smn.gob.ar/map_items/forecast/3',
+              'pronostico_2dias':'https://ws.smn.gob.ar/map_items/forecast/2',
+              'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
     
     #Solicitud del ingreso de datos al usuario
@@ -126,6 +159,15 @@ def main():
     ciudad = ingreso[2]
     
     #Crea los archivos .txt que de los cuales se extraerá la información necesaria
-    smn_request(urls_smn)
+    #smn_request(urls_smn)
+       
+    #Imprimir estado actual
+    
+    imprimir_actual("actual", lat, lon, ciudad)
+    
 
+    #Imprimir pronóstico extendido
+    archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
+    imprimir_extendido(archivos_extendido, lat, lon, ciudad)
+        
 main()
