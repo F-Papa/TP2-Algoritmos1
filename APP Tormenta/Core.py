@@ -180,6 +180,11 @@ def main():
             imprimir_extendido(archivos_extendido, lat, lon, ciudad)
             
         elif eleccion == "4":
+            coordenadas = ()
+            lat_f = lat
+            long_f = long
+            coordenadas = (lat_f,long_f)
+           
             a = 1
             analisis_foto(coordenadas)
         else:
