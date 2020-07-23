@@ -2,6 +2,29 @@ import modulo_csv as CSV
 import modulo_geo as GEO
 import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
+import colorfotos as analisis
+
+def analisis_foto(coordenadas):
+    nombre = ""
+    tamaño = 0
+    rojo = 0
+    magenta = 0
+    pixeles_totales = 0
+    recorte_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(400,20,270,370),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
+    corte_punto = analisis.lat_long(coordenadas)
+    provincia = analisis.buscar_provincia(recorte_provincias,corte_punto)
+    zonas = analisis.zonas_provincias(provincia,corte_punto)
+    while tamaño == 0:
+        nombre = input("Ingrese el nombre de la imagen: ")
+        imagen,nombre = analisis.verificador(nombre)
+        tamaño = analisis.tamañoF(imagen,tamaño)
+        if tamaño == 0:
+            print("El tamaño de la imagen no es el esperado (812x627)")       
+    if nombre.find("png") != -1:
+        imagen = analisis.png_jpg(nombre,imagen)
+    pixeles_zonas = analisis.contador_pixel(pixeles_totales,rojo,magenta,imagen,zonas)
+    analisis.alertas(pixeles_zonas,provincia)
+
 
 def ListadoAlertas():
     a = 2
@@ -158,7 +181,7 @@ def main():
             
         elif eleccion == "4":
             a = 1
-            #...
+            analisis_foto(coordenadas)
         else:
             desea_salir = True
         
