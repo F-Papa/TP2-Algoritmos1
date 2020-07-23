@@ -14,6 +14,29 @@ def menu():
     
     return eleccion
 
+def solicitar_usuario():
+    """Le solicita al usuario los datos de úbicación"""
+    
+    respuesta = input("¿Conoces la latitud y la logitud de la ciudad que querés ver el clima? S/N ").upper()
+    if respuesta == "S":
+        lat = input("Por favor, ingresa la latitud en el formato 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+        lon = input("Por favor, ingresa la longitud en el formato 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+        ciudad = ""
+        while (len(lat) < 6 or len(lon) < 6) and lat != "0" and lon != "0":
+            if len(lat) < 6 and lat != "1":
+                lat = input("La latitud ingresada es invalida. Recorda que el formato es 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+            elif len(lon) < 6 and lon !="1":   
+                lon = input("La longitud ingresada es invalida. Recorda que el formato es 'dd.ddd'. Se aceptan números negativos.\n Si no estás seguro y querés salir, presiona 1. ")
+            else:
+                lat="0"
+                lon="0"
+                ciudad = input("En ese caso, ¿podrías indicarnos qué ciudad te gustaría conocer su estado actual?").title()
+    else:
+        lat="0"
+        lon="0"
+        ciudad = input("En ese caso, ¿podrías indicarnos qué ciudad te gustaría conocer su estado actual?").title()
+    return [lat,lon,ciudad]
+
 def print_separador(longitud = 20):
     print('-'*longitud)
     print()
