@@ -1,6 +1,7 @@
 import modulo_csv as CSV
 import modulo_geo as GEO
 import modulo_graficos as GRAF
+import modulo_proceso_smn as smn
 
 def ListadoAlertas():
     a = 2
@@ -56,9 +57,9 @@ def imprimir_extendido(lista, latitud, longitud, ciudad):
        Precondición: Una lista que contenga el nombre de los archivos que contienen la información del pronóstico extendido;
                      Latitud y Longitud o Ciudad otorgados por el usuario."""
     
-    dia_1 = buscar_ubicacion(extendido(lista[0]), latitud, longitud, ciudad)
-    dia_2 = buscar_ubicacion(extendido(lista[1]), latitud, longitud, ciudad)
-    dia_3 = buscar_ubicacion(extendido(lista[2]), latitud, longitud, ciudad)
+    dia_1 = smn.buscar_ubicacion(smn.extendido(lista[0]), latitud, longitud, ciudad)
+    dia_2 = smn.buscar_ubicacion(smn.extendido(lista[1]), latitud, longitud, ciudad)
+    dia_3 = smn.buscar_ubicacion(smn.extendido(lista[2]), latitud, longitud, ciudad)
     teperatura_1dia = str(dia_1["Temperatura_mañana"])+"°C/"+str(dia_1["Temperatura_tarde"])+"°C"
     teperatura_2dia = str(dia_2["Temperatura_mañana"])+"°C/"+str(dia_2["Temperatura_tarde"])+"°C"
     teperatura_3dia = str(dia_3["Temperatura_mañana"])+"°C/"+str(dia_3["Temperatura_tarde"])+"°C"
@@ -73,7 +74,7 @@ def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
        Precondición: nombre del archivo que contiene el clima actual;
                      Latitud y Longitud o Ciudad otorgados por el usuario."""
     
-    clima_actual = buscar_ubicacion(actual(nombre_archivo), latitud, longitud, ciudad)
+    clima_actual = smn.buscar_ubicacion(smn.actual(nombre_archivo), latitud, longitud, ciudad)
     recomendacion = ""
     if clima_actual["Temperatura"] < 10:
         recomendacion = "Hoy va a hacer frío. Recuerden, llevar abrigo."
@@ -93,6 +94,15 @@ def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
                  
 
 def main():
+    urls_smn= {'actual':'https://ws.smn.gob.ar/map_items/weather',
+              'especiales':'https://ws.smn.gob.ar/alerts/type/IE',
+              'corto_plazo':'https://ws.smn.gob.ar/alerts/type/AC',
+              'alertas':'https://ws.smn.gob.ar/alerts/type/AL',
+              'pronostico_1dia':'https://ws.smn.gob.ar/map_items/forecast/1',
+              'pronostico_2dias':'https://ws.smn.gob.ar/map_items/forecast/2',
+              'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
+              'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
+        
     print_bienvenida()
     desea_salir = False
     
