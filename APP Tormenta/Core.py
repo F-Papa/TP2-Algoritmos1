@@ -2,7 +2,7 @@ import modulo_csv as CSV
 import modulo_geo as GEO
 import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
-import colorfotos as analisis
+import color_fotos as analisis
 
 def analisis_foto(coordenadas):
     nombre = ""
