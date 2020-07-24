@@ -1,12 +1,10 @@
 import modulo_csv as CSV
-import modulo_geo as GEO
+#import modulo_geo as GEO
 import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
 import color_fotos as analisis
 
 def analisis_foto(coordenadas):
-    '''necesita la tupla coordenadas para y teniendo los recortes de las provincias devuelve
-    por zona las alerta de lluvia, al ususario se le pide el ingreso del nombre de una imagen la cual es la que se analiza'''
     nombre = ""
     tamaño = 0
     rojo = 0
@@ -77,6 +75,27 @@ def print_opciones():
 def print_bienvenida():
     print("Bienvenido a Tormenta")
 
+
+def get_coord():
+    print("Porfavor ingrese sus coordenadas")
+    lat_str = ""
+    lon_str = ""
+    exito = False
+    
+    while not exito:
+        lat_str = input("Latitud: ")
+        lon_str = input("Longitud: ")
+        
+        try:
+            lat = float(lat_str)
+            lon = float(lon_str)
+            exito = True
+                        
+        except:
+            print("Coordenadas invalidas")
+            
+    return (lat, lon)
+
 def imprimir_extendido(lista, latitud, longitud, ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada
        Precondición: Una lista que contenga el nombre de los archivos que contienen la información del pronóstico extendido;
@@ -102,7 +121,7 @@ def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
     clima_actual = smn.buscar_ubicacion(smn.actual(nombre_archivo), latitud, longitud, ciudad)
     recomendacion = ""
     if clima_actual["Temperatura"] < 10:
-        recomendacion = "Hoy va a hacer frío. Recuerden, llevar abrigo."
+        recomendacion = "Hoy va a hacer frío. Recuerden llevar abrigo."
     elif clima_actual["Temperatura"] < 15: 
         recomendacion = "Hoy va a hacer día fresco. No descuidarse."
     elif clima_actual["Temperatura"] < 20:
@@ -110,8 +129,9 @@ def imprimir_actual(nombre_archivo, latitud,longitud,ciudad):
     elif clima_actual["Temperatura"] < 30:
         recomendacion = "Hoy va a hacer día caluroso. Cuidense del sol."
     else:
-        recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para avitar golpes de calor."
-    print("El teperatura actual en {} es: {}°C. La visibilidad es de {}km y la velovidad del viento es de {}km/m.\n{}".format(clima_actual["Ciudad"], 
+        recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para evitar golpes de calor."
+    
+    print("El teperatura actual en {} es: {}°C. La visibilidad es de {}km y la velocidad del viento es de {}km/m.\n{}\n\n".format(clima_actual["Ciudad"], 
                                                                                                                               clima_actual["Temperatura"], 
                                                                                                                               clima_actual["Visibilidad"], 
                                                                                                                               clima_actual["Velocidad_del_viento"],
@@ -132,13 +152,13 @@ def main():
     print_bienvenida()
     desea_salir = False
     #Solicitud de datos de latitud y longitud o ciudad al usuario
-    ingreso = solicitar_usuario()
-    lat = ingreso[0]
-    lon = ingreso[1]
-    ciudad = ingreso[2]
+    lat, lon, ciudad = solicitar_usuario()
     #Imprimir pronóstico actual
+    print_separador()
     
     imprimir_actual("actual", lat, lon, ciudad)
+    
+    
     
     while not desea_salir:
         eleccion = menu()
@@ -177,20 +197,23 @@ def main():
             #...
         elif eleccion == "3":
             #Imprimir pronóstico extendido
-            a = 1
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
             imprimir_extendido(archivos_extendido, lat, lon, ciudad)
             
         elif eleccion == "4":
+            #Procesamiento de imagen de radar.
             coordenadas = ()
-            lat_f = float(lat)
-            lat_f = lat_f * -1
-            long_f = float(long)
-            long_f = long_f * -1
-            coordenadas = (lat_f,long_f)
-           
-            a = 1
-            analisis_foto(coordenadas)
+            
+            if float(lat) != 0 and float(lon) != 0:
+                coordenadas = (float(lat), -float(lon))
+            
+            else:
+                coordenadas = get_coord()
+           #34.593056, 58.445746     
+            analisis_foto((-coordenadas[0], -coordenadas[1]))
+            
+            print_separador()
+            
         else:
             desea_salir = True
         

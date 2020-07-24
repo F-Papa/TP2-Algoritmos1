@@ -2,8 +2,6 @@ from PIL import Image
 from PIL import ImageOps
 
 def verificador(nombre):
-    ''' necesita el ingreso de la variable nombre para verificar la correcta apertura de la imagen
-        en el caso de que no se pueda abrir se volvera a pregunatar el nombre del archivo, y devolvera el nombre y la imagen'''
     try:
         imagen = Image.open(nombre)
     except:
@@ -13,20 +11,18 @@ def verificador(nombre):
     return imagen,nombre
 
 def tamañoF(imagen,tamaño):
-    '''verifica si el tamaño de la imagen es el esperado y modificara a la variable tamaño dependiendo de ello'''
     if imagen.size == (812, 627):
         tamaño = 1
     return tamaño
 
 def png_jpg(ruta,imagen):
-    ''' necesita las variables ruta e imagen para transformar el arcgivo png a jpg '''
     imagen = imagen.convert('RGB')
     nombre = "imagen.jpg"
     imagen.save(nombre)
     return imagen
 
 def lat_long(coordenadas):
-     '''con la ingresada devuelve dos tuplas con los recortes a 20px a la redonda y a 2px a la redonda '''
+    
     longitud = 73.70045905 # longitud de referencia
     latitud = 27.601116798 # latitud de referencia 
     pixel_distancia = 0.0268380045 # relacion entre diferencia de latitudes/longitudes y pixeles
@@ -51,7 +47,6 @@ def lat_long(coordenadas):
     return corte, punto
 
 def buscar_provincia(recorte_provincias,corte_punto):
-    '''con el recorte de de 2px  a la redonda y los recortes de cada provincia define en que provincia esta'''
     provincia = ()
     for recorte in recorte_provincias.items():
         if recorte[1][0] < corte_punto[1][0] and  recorte[1][1] < corte_punto[1][1] and  recorte[1][2] < corte_punto[1][2] and  recorte[1][3] < corte_punto[1][3]:
@@ -60,7 +55,6 @@ def buscar_provincia(recorte_provincias,corte_punto):
 
 
 def zonas_provincias(provincia,corte_punto):
-    '''define las tuplas de recorte de las 3 zonas de la provincia y a 20px del punto'''
     altura_provincia = provincia[1][1] - provincia[1][3]
     if altura_provincia  < 0:
         altura_provincia  = altura_provincia  * (-1)
@@ -73,7 +67,6 @@ def zonas_provincias(provincia,corte_punto):
 
 
 def contador_pixel(pixeles_totales,rojo,magenta,imagen,zonas):
-    '''cunenta los pixeles que se concideraron rojo y volioletas y devuelve por zona una lista con esa info'''
     pixeles = []
     pixeles_zonas = []
     for zona in zonas.items():
@@ -92,7 +85,6 @@ def contador_pixel(pixeles_totales,rojo,magenta,imagen,zonas):
 
 
 def alertas(pixeles_zonas,provincia):
-    '''da la alerta segun si cumple con las condiciones'''
     print(provincia[0],":")
     for zona in pixeles_zonas:
         porcentaje = int((zona[1][2] * 1.5)/100)
