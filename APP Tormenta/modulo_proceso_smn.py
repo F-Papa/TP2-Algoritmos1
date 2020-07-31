@@ -13,7 +13,7 @@ def smn_request(diccionario):
             archivo.write(resp.content)
 
 def alertas(nombre_archivo):
-    """Generá una lista con los datos necesarios de cada una de las aertas incluidas en archivo de alertas. 
+    """Generá una lista con los datos necesarios de cada una de las alertas incluidas en archivo de alertas. 
     Precondición: El nombre del archivo que se desea procesar"""
     
     info = []
@@ -74,7 +74,7 @@ def actual(nombre_archivo):
     return info
 
 
-def buscar_ubicacion(lista, latitud, longitud, ciudad):
+def buscar_ubicacion(lista, ciudad):
     """"En base a la información de latitud y longitud o ciudad, busca en una lista si se encuentra el elemento determinado.
     Precondición: 1. Lista con el prónostico extendido
                   2. Latitud del lugar de interés (opcional)
@@ -83,8 +83,5 @@ def buscar_ubicacion(lista, latitud, longitud, ciudad):
     Postcondición: Un diccionario con la información brindada."""
     
     for elemento in lista:
-        if latitud == "0":
-            if elemento["Ciudad"] == ciudad:
-                return elemento
-        elif latitud in elemento["Latitud"] and longitud in elemento["Longitud"]:
+        if elemento["Ciudad"] == ciudad:
             return elemento

@@ -84,7 +84,7 @@ def get_promedio(archivo, posicion_valor, años_a_retroceder=0):
         año_linea = extraer_año(lineas[i])
         año_linea_sig = extraer_año(lineas[i-1])
 
-        if (año_actual - año_linea) < años_a_retroceder:
+        if (año_actual - año_linea) <= años_a_retroceder:
             
             sumatoria += float(lineas[i][posicion_valor])
 
@@ -113,5 +113,6 @@ def cargar_archivo(directorio):
             lista_a_devolver = [linea for linea in archivo]
     except:
         print("Error abriendo el archivo:", directorio)
+        print()
 
     return lista_a_devolver    
