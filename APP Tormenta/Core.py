@@ -235,6 +235,8 @@ def main():
            #34.593056, 58.445746     
             if lat != 0 and lon !=0:
                 analisis_foto((-lat, -lon))
+            else:
+                print("Coordenadas no válidas")
             
             print_separador()
             
