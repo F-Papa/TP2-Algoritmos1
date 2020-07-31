@@ -21,23 +21,12 @@ def get_max(archivo, posicion_valor, años_a_retroceder = 0):
     
     return max
 
-def lista_a_int(lista):
-    """ Pre-Condicion: Recibe un numero como lista de digitos
-        Post-Condicion: Devuelve ese numero como un int"""
-    
-    num_a_devolver = 0
-    for i in range(len(lista)):
-        num_a_devolver += int(lista[-1-i])*(10**i)
-    return num_a_devolver
-
 def extraer_año(linea):
     """ Pre-Condicion: Recibe una lista en la que el primer item es un año (cadena)
         Post-Condicion: Devuelve el año de esa entrada (int)"""
 
-    buffer=[]
-    for i in range(4):
-        buffer.append(linea[0][-4+i])
-    return lista_a_int(buffer)
+    tokens = linea.split(',')
+    return int(tokens[-1])
 
 def get_año_actual():
     """Post-Condicion: devuelve el año actual (int)"""
@@ -84,7 +73,7 @@ def get_promedio(archivo, posicion_valor, años_a_retroceder=0):
         año_linea = extraer_año(lineas[i])
         año_linea_sig = extraer_año(lineas[i-1])
 
-        if (año_actual - año_linea) < años_a_retroceder:
+        if (año_actual - año_linea) <= años_a_retroceder:
             
             sumatoria += float(lineas[i][posicion_valor])
 
