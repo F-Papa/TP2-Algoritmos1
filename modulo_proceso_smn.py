@@ -9,7 +9,7 @@ def smn_request(diccionario):
     for key, item in diccionario.items():
         resp = requests.get(item, allow_redirects = True)
         nombre = key+'.txt'
-        with open(nombre, 'wb') as archivo:
+        with open("temp//"+nombre, 'wb') as archivo:
             archivo.write(resp.content)
 
 def alertas(nombre_archivo):
@@ -17,7 +17,7 @@ def alertas(nombre_archivo):
     Precondición: El nombre del archivo que se desea procesar"""
     
     info = []
-    with open(nombre_archivo+".txt", "r", encoding="utf-8") as archivo:
+    with open("temp//"+nombre_archivo+".txt", "r", encoding="utf-8") as archivo:
         data = archivo.readlines()
         for elemento in data:
             elemento_json = json.loads(elemento)
@@ -36,7 +36,7 @@ def extendido(nombre_archivo):
     Precondición: El nombre del archivo que se desea procesar"""
     
     info = []
-    with open(nombre_archivo + ".txt","r", encoding="utf-8") as archivo:
+    with open("temp//"+ nombre_archivo + ".txt","r", encoding="utf-8") as archivo:
         data = archivo.readlines()
         for elemento in data:
             elemento_json = json.loads(elemento)
@@ -56,7 +56,7 @@ def actual(nombre_archivo):
     Precondición: El nombre del archivo que se desea procesar"""
     
     info = []
-    with open(nombre_archivo +".txt", "r", encoding="utf-8") as archivo:
+    with open("temp//" + nombre_archivo +".txt", "r", encoding="utf-8") as archivo:
         data = archivo.readlines()
         for elemento in data:
             elemento_json = json.loads(elemento)

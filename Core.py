@@ -6,23 +6,34 @@ import color_fotos as analisis
 
 def analisis_foto(coordenadas):
     nombre = ""
-    tamaño = 0
+    tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
     rojo = 0
     magenta = 0
     pixeles_totales = 0
     recorte_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(400,20,270,370),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
+    
     corte_punto = analisis.lat_long(coordenadas)
     provincia = analisis.buscar_provincia(recorte_provincias,corte_punto)
     zonas = analisis.zonas_provincias(provincia,corte_punto)
-    while tamaño == 0:
+
+    while not tamaño_es_correcto:
+
         nombre = input("Ingrese el nombre de la imagen: ")
         imagen,nombre = analisis.verificador(nombre)
-        tamaño = analisis.tamañoF(imagen,tamaño)
-        if tamaño == 0:
-            print("El tamaño de la imagen no es el esperado (812x627)")       
-    if nombre.find("png") != -1:
+
+        tamaño_es_correcto = analisis.check_tamaño(imagen)
+
+        if not tamaño_es_correcto:
+            print("El tamaño de la imagen no es el esperado (812x627)") 
+
+    if "png" in nombre: #Expresion simplificada
+
         imagen = analisis.png_jpg(nombre,imagen)
+
     pixeles_zonas = analisis.contador_pixel(pixeles_totales,rojo,magenta,imagen,zonas)
+    
+    print_separador()
+
     analisis.alertas(pixeles_zonas,provincia)
 
 
@@ -121,7 +132,7 @@ def imprimir_extendido(lista, ciudad):
         print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format(dia_1["Ciudad"],temperatura_1dia, temperatura_2dia, temperatura_3dia))
     else:
         
-        print(f"No se encontraron datos del clima extendido en {ciudad}")
+        print(f"No se encontraron datos del clima extendido en {ciudad}\n")
         
 def imprimir_actual(nombre_archivo,ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada
@@ -148,7 +159,7 @@ def imprimir_actual(nombre_archivo,ciudad):
                                                                                                                                       clima_actual["Velocidad_del_viento"],
                                                                                                                                       recomendacion))
     else:
-        print(f"No se encontraron datos del clima actual en {ciudad}")
+        print(f"No se encontraron datos del clima actual en {ciudad}\n")
 
 def main():
     urls_smn= {'actual':'https://ws.smn.gob.ar/map_items/weather',
@@ -232,11 +243,9 @@ def main():
             #Procesamiento de imagen de radar.
 
             lat, lon = get_coord()
-           #34.593056, 58.445746     
+           #-34.593056, -58.445746     
             if lat != 0 and lon !=0:
                 analisis_foto((-lat, -lon))
-            else:
-                print("Coordenadas no válidas")
             
             print_separador()
             
