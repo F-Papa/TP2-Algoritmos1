@@ -5,7 +5,7 @@ import modulo_proceso_smn as smn
 import color_fotos as analisis
 
 def analisis_foto(coordenadas):
-    nombre = ""
+    nombre,entrada = "", ""
     tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
     rojo = 0
     magenta = 0
@@ -16,7 +16,7 @@ def analisis_foto(coordenadas):
     provincia = analisis.buscar_provincia(recorte_provincias,corte_punto)
     zonas = analisis.zonas_provincias(provincia,corte_punto)
 
-    while not tamaño_es_correcto:
+    while not tamaño_es_correcto and entrada != "*":
 
         nombre = input("Ingrese el nombre de la imagen: ")
         imagen,nombre = analisis.verificador(nombre)
@@ -25,6 +25,7 @@ def analisis_foto(coordenadas):
 
         if not tamaño_es_correcto:
             print("El tamaño de la imagen no es el esperado (812x627)") 
+            entrada = input("Si desea salir ingrese *: ")
 
     if "png" in nombre: #Expresion simplificada
 
@@ -35,7 +36,6 @@ def analisis_foto(coordenadas):
     print_separador()
 
     analisis.alertas(pixeles_zonas,provincia)
-
 
 def ListadoAlertas():
     a = 2
@@ -69,7 +69,7 @@ def print_opciones():
     print("[6] Salir")
 
 def print_bienvenida():
-    print("Bienvenido a Tormenta")
+    print("\nBienvenido a Tormenta")
 
 def verif_coord(coord_str):
     negativo = True

@@ -10,7 +10,7 @@ def verificador(nombre):
         imagen,nombre = verificador(nombre)      
     return imagen,nombre
 
-def check_tamaño(imagen):    #Ahora el codigo esta mas legible
+def check_tamaño(imagen):    #Ex TamañoF
 
     if imagen.size == (812, 627):
         return True
@@ -26,19 +26,19 @@ def png_jpg(ruta,imagen):   #Ahora el nombre es el mismo y solo cambia la extens
 
 def lat_long(coordenadas):
     
-    longitud = 73.70045905 # longitud de referencia
-    latitud = 27.601116798 # latitud de referencia 
+    LONGITUD = 73.70045905 # longitud de referencia
+    LATITUD = 27.601116798 # latitud de referencia 
     PIXEL_DISTANCIA = 0.0268380045 # relacion entre diferencia de latitudes/longitudes y pixeles
     RADIO = 20  # cuadrado de 20x20 con centro en la cordenada ingresada
     ANCHO_IMAGEN = 812
     ALTO_IMAGEN = 627
     
-    diferencia_longitud = longitud - coordenadas[1]
+    diferencia_longitud = LONGITUD - coordenadas[1]
     corte_izquierdo = (diferencia_longitud /PIXEL_DISTANCIA) - RADIO
     corte_izquierdo = int(corte_izquierdo)
     corte_derecho = ANCHO_IMAGEN - ((corte_izquierdo) + 2 * RADIO)
     
-    diferencia_latitud = coordenadas[0] - latitud
+    diferencia_latitud = coordenadas[0] - LATITUD
     corte_superior = (diferencia_latitud / PIXEL_DISTANCIA) - RADIO
     corte_superior = int(corte_superior)
     corte_inferior = ALTO_IMAGEN - ((corte_superior) + 2 * RADIO)

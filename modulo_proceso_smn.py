@@ -5,12 +5,26 @@ def smn_request(diccionario):
     """Extrae la información de SMN y, si no existe, genera un archivo para cada uno de los servicios para almacenar 
     la información.
     Precondición: diccionario con los links a cada uno de los servicios del SMN"""
-    
+    errores = []
+
     for key, item in diccionario.items():
-        resp = requests.get(item, allow_redirects = True)
+        exito = False
+
         nombre = key+'.txt'
-        with open("temp//"+nombre, 'wb') as archivo:
-            archivo.write(resp.content)
+
+        try:
+            resp = requests.get(item, allow_redirects = True)
+            exito = True
+        
+        except:
+            print(f"Error descargando {key} desde {item}")
+
+        if exito:
+            with open("temp//"+nombre, 'wb') as archivo:
+                    archivo.write(resp.content)
+        
+        """except:
+            print(f"Error abriendo archivo: {nombre}")"""            
 
 def alertas(nombre_archivo):
     """Generá una lista con los datos necesarios de cada una de las aertas incluidas en archivo de alertas. 
@@ -72,7 +86,6 @@ def actual(nombre_archivo):
                               "Visibilidad": elemento_json[i]["weather"]["visibility"],
                               "Velocidad_del_viento": elemento_json[i]["weather"]["wind_speed"]})
     return info
-
 
 def buscar_por_ubicacion(lista, ciudad):
     """"En base a la información de latitud y longitud o ciudad, busca en una lista si se encuentra el elemento determinado.
