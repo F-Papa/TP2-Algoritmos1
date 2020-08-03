@@ -10,38 +10,41 @@ def verificador(nombre):
         imagen,nombre = verificador(nombre)      
     return imagen,nombre
 
-def tamañoF(imagen,tamaño):
-    if imagen.size == (812, 627):
-        tamaño = 1
-    return tamaño
+def check_tamaño(imagen):    #Ex TamañoF
 
-def png_jpg(ruta,imagen):
+    if imagen.size == (812, 627):
+        return True
+        
+    else:
+        return False
+
+def png_jpg(ruta,imagen):   #Ahora el nombre es el mismo y solo cambia la extension
     imagen = imagen.convert('RGB')
-    nombre = "imagen.jpg"
-    imagen.save(nombre)
+    tokens = ruta.split(".png")
+    imagen.save(tokens[0]+".jpg")
     return imagen
 
 def lat_long(coordenadas):
     
-    longitud = 73.70045905 # longitud de referencia
-    latitud = 27.601116798 # latitud de referencia 
-    pixel_distancia = 0.0268380045 # relacion entre diferencia de latitudes/longitudes y pixeles
-    radio = 20  # cuadrado de 20x20 con centro en la cordenada ingresada
-    ancho_imagen = 812
-    alto_imagen = 627
+    LONGITUD = 73.70045905 # longitud de referencia
+    LATITUD = 27.601116798 # latitud de referencia 
+    PIXEL_DISTANCIA = 0.0268380045 # relacion entre diferencia de latitudes/longitudes y pixeles
+    RADIO = 20  # cuadrado de 20x20 con centro en la cordenada ingresada
+    ANCHO_IMAGEN = 812
+    ALTO_IMAGEN = 627
     
-    diferencia_longitud = longitud - coordenadas[1]
-    corte_izquierdo = (diferencia_longitud /pixel_distancia) - radio
+    diferencia_longitud = LONGITUD - coordenadas[1]
+    corte_izquierdo = (diferencia_longitud /PIXEL_DISTANCIA) - RADIO
     corte_izquierdo = int(corte_izquierdo)
-    corte_derecho = ancho_imagen - ((corte_izquierdo) + 2 * radio)
+    corte_derecho = ANCHO_IMAGEN - ((corte_izquierdo) + 2 * RADIO)
     
-    diferencia_latitud = coordenadas[0] - latitud
-    corte_superior = (diferencia_latitud / pixel_distancia) - radio
+    diferencia_latitud = coordenadas[0] - LATITUD
+    corte_superior = (diferencia_latitud / PIXEL_DISTANCIA) - RADIO
     corte_superior = int(corte_superior)
-    corte_inferior = alto_imagen - ((corte_superior) + 2 * radio)
+    corte_inferior = ALTO_IMAGEN - ((corte_superior) + 2 * RADIO)
     
     corte = (corte_izquierdo,corte_superior,corte_derecho,corte_inferior) # left, up, right, bottom
-    punto = (corte_izquierdo + (radio - 1) ,corte_superior + (radio-1),corte_derecho + (radio-1),corte_inferior + (radio-1)) #sumo el radio para que solo me quede el punto y poder identificar la provincia
+    punto = (corte_izquierdo + (RADIO - 1) ,corte_superior + (RADIO-1),corte_derecho + (RADIO-1),corte_inferior + (RADIO-1)) #sumo el RADIO para que solo me quede el punto y poder identificar la provincia
     # el -1 viene a que al pasar los cortes a numeros enteros existe un error de 1pixel y ese punto no existe
 
     return corte, punto
@@ -50,9 +53,7 @@ def buscar_provincia(recorte_provincias,corte_punto):
     provincia = ()
     for recorte in recorte_provincias.items():
         if recorte[1][0] < corte_punto[1][0] and  recorte[1][1] < corte_punto[1][1] and  recorte[1][2] < corte_punto[1][2] and  recorte[1][3] < corte_punto[1][3]:
-            provincia = recorte
-    return provincia
-
+            return recorte #Simplifico esto para que termine una vez que la encuntra
 
 def zonas_provincias(provincia,corte_punto):
     altura_provincia = provincia[1][1] - provincia[1][3]
