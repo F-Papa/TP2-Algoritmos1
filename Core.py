@@ -26,6 +26,7 @@ def analisis_foto(coordenadas,provincia):
         imagen = analisis.png_jpg(nombre,imagen)
 
     pixeles_zonas = analisis.contador_pixel(imagen,zonas)
+    print_separador()
     analisis.alertas(pixeles_zonas,provincia)
 
 def menu():
