@@ -1,5 +1,5 @@
 import modulo_csv as CSV
-#import modulo_geo as GEO
+import modulo_geo as GEO
 import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
 import color_fotos as analisis
@@ -135,6 +135,7 @@ def imprimir_extendido(lista, ciudad):
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
 
 def imprimir_alertas_nacionales(lista):
+    "Imprime las alertas a nivel nacional obtenidad del Sistema Meteorológico Nacional"
     for i in range(len(lista)):
         zonas = ""
         for clave, elemento in lista[i].items():
@@ -146,6 +147,19 @@ def imprimir_alertas_nacionales(lista):
         print()
         print(lista[i]["Descripción"])
         print("--------")
+
+def alertas_cercanas(lista, provincia):
+    """Imprime las alertas emitidas para la pronvincia indicada por el usuario"""
+    
+    zonas = ""
+    for i in range(len(lista)):
+        for clave, elemento in lista[i].items():
+            if "Zona" in clave and provincia in elemento:
+                zonas += elemento + ", "
+    if zonas != "":
+        print("En la provincia que nos indicaste hay las siguientes alertas: {}.".format(zonas[:-2]))
+    else:
+        print("No hay alertas para {}.".format(provincia))
 
 def imprimir_actual(nombre_archivo,ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada
@@ -243,7 +257,26 @@ def main():
                 imprimir_alertas_nacionales(alertas_nacional)
                 a = 1
             elif eleccion == "2":
-                a = 1
+                print("[1] Buscar por provincia")
+                print("[2] Buscar por coordenadas")
+                print("Ingrese cualquier otra tecla para volver al menu.")
+                eleccion = input()
+
+                if eleccion == "1":
+                    provincia = input("Nombre de la provincia: ").title()
+                    
+                    if provincia == "Tierra Del Fuego":
+                        provincia = "Tierra del Fuego"
+                    elif provincia == "Santiago Del Estero":
+                        pronvicia = "Santiago del Estero"
+
+                elif eleccion == "2":
+                    lat, lon = get_coord()
+                    provincia = GEO.get_provincia(lat, lon)
+            
+            alertas_provincial = smn.alertas("alertas")
+            alertas_cercanas(alertas_provincial, provincia)
+            a = 1
             
             print_separador()
             
