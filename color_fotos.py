@@ -10,33 +10,35 @@ def verificador(nombre):
         imagen,nombre = verificador(nombre)      
     return imagen,nombre
 
-def tamaño_correcto(imagen,tamaño,ancho,alto):
-    if imagen.size == (ancho,alto):
-        tamaño = 1
-    return tamaño
-
-def png_jpg(imagen):
+def check_tamaño(imagen,ANCHO,ALTO):   
+    if imagen.size == (ANCHO, ALTO):
+        return True     
+    else:
+        return False
+    
+def png_jpg(nombre,imagen):   #Ahora el nombre es el mismo y solo cambia la extension
     imagen = imagen.convert('RGB')
-    nombre = "imagen.jpg"
-    imagen.save(nombre)
-    return imagen
+    tokens = nombre.split(".png")
+    imagen.save(tokens[0]+".jpg")
+    return imagen    
 
-def lat_long(coordenadas,ancho,alto):
+
+def lat_long(coordenadas,ANCHO,ALTO):
     
-    longitud = 73.70045905 # longitud de referencia
-    latitud = 27.601116798 # latitud de referencia 
-    pixel_distancia = 0.0268380045 # relacion entre diferencia de latitudes/longitudes y pixeles
-    radio = 25  # cuadrado de 25x25 con centro en la cordenada ingresada
+    LONGITUD = 73.69945905 # longitud de referencia
+    LATITUD = 27.301116798 # latitud de referencia 
+    PIXEL_DISTANCIA = 0.0272000045 # relacion entre diferencia de latitudes/longitudes y pixeles
+    RADIO = 30  # cuadrado de 20x20 con centro en la cordenada ingresada
     
-    diferencia_longitud = longitud - coordenadas[1]
-    corte_izquierdo = (diferencia_longitud /pixel_distancia) - radio
+    diferencia_longitud = LONGITUD - coordenadas[1]
+    corte_izquierdo = (diferencia_longitud /PIXEL_DISTANCIA) - RADIO
     corte_izquierdo = int(corte_izquierdo)
-    corte_derecho = ancho - ((corte_izquierdo) + 2 * radio)
+    corte_derecho = ANCHO - ((corte_izquierdo) + 2 * RADIO)
     
-    diferencia_latitud = coordenadas[0] - latitud
-    corte_superior = (diferencia_latitud / pixel_distancia) - radio
+    diferencia_latitud = coordenadas[0] - LATITUD
+    corte_superior = (diferencia_latitud / PIXEL_DISTANCIA) - RADIO
     corte_superior = int(corte_superior)
-    corte_inferior = alto - ((corte_superior) + 2 * radio)
+    corte_inferior = ALTO - ((corte_superior) + 2 * RADIO)
     
     corte = (corte_izquierdo,corte_superior,corte_derecho,corte_inferior) # left, up, right, bottom
 
@@ -46,8 +48,8 @@ def lat_long(coordenadas,ancho,alto):
 def recorte(provincia,recortes_provincias):
     for clave in recortes_provincias :
         if clave == provincia:
-            recorte_prov= recortes_provincias[clave]
-    return recorte_prov
+            recorte_prov = recortes_provincias[clave]
+            return recorte_prov
 
 def zonas_provincias(provincia,alto,corte_radio):
     altura_provincia = alto - (provincia[1] + provincia[3])
@@ -64,7 +66,6 @@ def contador_pixel(imagen,zonas):
     pixeles_zonas = []
     for zona in zonas.items():
         im = ImageOps.crop(imagen, zona[1])
-        im.show()
         rojo = 0
         magenta = 0
         pixeles_totales = 0
@@ -96,8 +97,4 @@ def alertas(pixeles_zonas,provincia):
             print("Alerta de tormenta y granizo")
         if zona[1][1] < 5 and zona[1][0]<5:
             print("No hay tormentas")
-
-
-
-    
    
