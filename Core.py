@@ -133,7 +133,20 @@ def imprimir_extendido(lista, ciudad):
     else:
         
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
-        
+
+def imprimir_alertas_nacionales(lista):
+    for i in range(len(lista)):
+        zonas = ""
+        for clave, elemento in lista[i].items():
+            if "Zona" in clave:
+                zonas += elemento+", "
+        print("Alerta a nivel nacional nro.: {}.".format(i+1))
+        print("Fecha: {}.".format(lista[i]["Fecha"]))
+        print("Zonas afectadas: {}.".format(zonas[:-2]))
+        print()
+        print(lista[i]["Descripción"])
+        print("--------")
+
 def imprimir_actual(nombre_archivo,ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada
        Precondición: nombre del archivo que contiene el clima actual;
@@ -226,6 +239,8 @@ def main():
                 eleccion = input()
             
             if eleccion == "1":
+                alertas_nacional = smn.alertas("alertas")
+                imprimir_alertas_nacionales(alertas_nacional)
                 a = 1
             elif eleccion == "2":
                 a = 1
