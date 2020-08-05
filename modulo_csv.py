@@ -102,6 +102,5 @@ def cargar_archivo(directorio):
             lista_a_devolver = [linea for linea in archivo]
     except:
         print("Error abriendo el archivo:", directorio)
-        print()
 
     return lista_a_devolver    

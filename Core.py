@@ -48,18 +48,11 @@ def menu():
         print()
     
     return eleccion
-<<<<<<< HEAD:APP Tormenta/Core.py
-    
-def get_ciudad():
-    return input("Por favor ingrese la ciudad en la que se encuentra -> ").title()
-
-=======
 
 def solicitar_usuario():
     """Le solicita al usuario los datos de úbicación"""
     return input("¿Podrías indicarnos en qué ciudad te encuentras? -> ").title()
     
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
 def print_separador(longitud = 20):
     print('-'*longitud)
     print()
@@ -68,55 +61,6 @@ def print_opciones():
     
     print("TORMENTA")
     print("--------")
-<<<<<<< HEAD:APP Tormenta/Core.py
-    print("[1] Analizar un Archivo CSV")
-    print("[2] Alertas")
-    print("[3] Pronostico extendido para una ciudad".title())
-    print("[4] Analizar una imagen de radar".title())
-    print("[5] Cambiar de ciudad".title())
-    print("[6] Salir")
-
-def validar_coord(entrada):
-    
-    error, negativo = True, True
-    coord = float(0)
-    
-    if entrada == entrada.lstrip('-'):
-        negativo = False
-    
-    entrada = entrada.lstrip('-')
-    
-    if len(entrada) == 6:
-
-        try:
-            coord = float(entrada)
-            if negativo:
-                coord = -coord
-                
-            error = False
-            
-        except:
-            coord = float(0)
-        
-    if error:
-        print("\nFormato incorrecto, recuerde que este es: (-)dd.ddd")
-        print("Si desea salir, ingrese *")
-    
-    return coord
-
-def pedir_coordenadas():
-    print("Porfavor ingrese las coordenadas")
-    lat, lon = float(0), float(0)
-    entrada = ""
-    
-    while lat == 0 and entrada != "*":       
-        entrada = input("Latitud: ")
-        lat = validar_coord(entrada)
-    
-    while lon == 0 and entrada != "*":
-        entrada = input("Longitud: ")
-        lon = validar_coord(entrada)
-=======
     print("[1] Analizar un archivo CSV")
     print("[2] Alertas")
     print("[3] Pronostico extendido para una ciudad")
@@ -166,7 +110,6 @@ def get_coord():
     while lon == 0 and eleccion != "*":
         eleccion = input("Longitud: ")
         lon = verif_coord(eleccion)
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
          
     return (lat, lon)
 
@@ -175,26 +118,6 @@ def imprimir_extendido(lista, ciudad):
        Precondición: Una lista que contenga el nombre de los archivos que contienen la información del pronóstico extendido;
                      Latitud y Longitud o Ciudad otorgados por el usuario."""
     
-<<<<<<< HEAD:APP Tormenta/Core.py
-    dia_1 = smn.buscar_ubicacion(smn.extendido(lista[0]), ciudad)
-    dia_2 = smn.buscar_ubicacion(smn.extendido(lista[1]), ciudad)
-    dia_3 = smn.buscar_ubicacion(smn.extendido(lista[2]), ciudad)
-    
-    if dia_1 != None:
-        
-        teperatura_1dia = str(dia_1["Temperatura_mañana"])+"°C/"+str(dia_1["Temperatura_tarde"])+"°C"
-        teperatura_2dia = str(dia_2["Temperatura_mañana"])+"°C/"+str(dia_2["Temperatura_tarde"])+"°C"
-        teperatura_3dia = str(dia_3["Temperatura_mañana"])+"°C/"+str(dia_3["Temperatura_tarde"])+"°C"
-
-        print ("{:<10} \t {:<15} \t {:<15} \t {:<15}".format("Ciudad","1 día: Mañana/Tarde",
-                                                             "2 días: Mañana/Tarde", "3 días: Mañana/Tarde"))
-        print ("{:<10} \t {:<15} \t {:<15} \t {:<15}\n\n".format(dia_1["Ciudad"],teperatura_1dia, teperatura_2dia, teperatura_3dia))
-    
-    else:
-        print(f"No se encontraron datos del clima extendido en {ciudad}\n")
-        
-def imprimir_actual(nombre_archivo, ciudad):
-=======
     dia_1 = smn.buscar_por_ubicacion(smn.extendido(lista[0]), ciudad)
     dia_2 = smn.buscar_por_ubicacion(smn.extendido(lista[1]), ciudad)
     dia_3 = smn.buscar_por_ubicacion(smn.extendido(lista[2]), ciudad)
@@ -210,18 +133,26 @@ def imprimir_actual(nombre_archivo, ciudad):
     else:
         
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
-        
+
+def imprimir_alertas_nacionales(lista):
+    for i in range(len(lista)):
+        zonas = ""
+        for clave, elemento in lista[i].items():
+            if "Zona" in clave:
+                zonas += elemento+", "
+        print("Alerta a nivel nacional nro.: {}.".format(i+1))
+        print("Fecha: {}.".format(lista[i]["Fecha"]))
+        print("Zonas afectadas: {}.".format(zonas[:-2]))
+        print()
+        print(lista[i]["Descripción"])
+        print("--------")
+
 def imprimir_actual(nombre_archivo,ciudad):
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
     """Imprime el pronóstico extendido de la ciudad seleccionada
        Precondición: nombre del archivo que contiene el clima actual;
                      Latitud y Longitud o Ciudad otorgados por el usuario."""
     
-<<<<<<< HEAD:APP Tormenta/Core.py
-    clima_actual = smn.buscar_ubicacion(smn.actual(nombre_archivo), ciudad)
-=======
     clima_actual = smn.buscar_por_ubicacion(smn.actual(nombre_archivo), ciudad)
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
     
     if clima_actual:
         if clima_actual["Temperatura"] < 10:
@@ -234,18 +165,6 @@ def imprimir_actual(nombre_archivo,ciudad):
             recomendacion = "Hoy va a hacer día caluroso. Cuidense del sol."
         else:
             recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para evitar golpes de calor."
-<<<<<<< HEAD:APP Tormenta/Core.py
-
-        print("La temperatura actual en {} es: {}°C. La visibilidad es de {}km y la velocidad del viento es de {}km/m.\n{}\n\n".format(clima_actual["Ciudad"], 
-                                                                                                                              clima_actual["Temperatura"], 
-                                                                                                                              clima_actual["Visibilidad"], 
-                                                                                                                              clima_actual["Velocidad_del_viento"],
-                                                                                                                              recomendacion))
-                 
-    else:
-        print(f"No se encontraron datos del clima actual en {ciudad}\n")
-        
-=======
         
         print("La temperatura actual en {} es: {}°C. La visibilidad es de {}km y la velocidad del viento es de {}km/m.\n{}\n\n".format(clima_actual["Ciudad"], 
                                                                                                                                       clima_actual["Temperatura"], 
@@ -255,7 +174,6 @@ def imprimir_actual(nombre_archivo,ciudad):
     else:
         print(f"No se encontraron datos del clima actual en {ciudad}\n")
 
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
 def main():
     urls_smn= {'actual':'https://ws.smn.gob.ar/map_items/weather',
               'especiales':'https://ws.smn.gob.ar/alerts/type/IE',
@@ -266,20 +184,6 @@ def main():
               'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
     
-<<<<<<< HEAD:APP Tormenta/Core.py
-    smn.smn_request(urls_smn)    
-    
-    desea_salir = False
-    
-    print("Bienvenido a Tormenta")
-    ciudad = get_ciudad()
-
-    #Imprimir pronóstico actual
-    print_separador()
-    
-    imprimir_actual("actual", ciudad)
-      
-=======
     smn.smn_request(urls_smn)
     
     print_bienvenida()
@@ -293,7 +197,6 @@ def main():
     
     desea_salir = False
     
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
     while not desea_salir:
         eleccion = menu()
         
@@ -330,59 +233,24 @@ def main():
             eleccion = "0"
             
             while eleccion not in "123":
-<<<<<<< HEAD:APP Tormenta/Core.py
-                print("Elija una opcion")
-                print("[1] Alertas para unas coordenadas especificas".title())
-                print("[2] Alertas a nivel nacional".title())
-                print("[3] Volver al menu".title())
-            
-                eleccion = input()
-                
-            if eleccion == "1":
-                a = 1
-            
-            elif eleccion == "2":
-                a = 1
-            
-            else:
-                a = 1
-
-
-=======
                 print("[1] Alertas a nivel nacional")
                 print("[2] Alertas cercanas a unas coordenadas")
                 print("[3] Volver al menu")
                 eleccion = input()
             
             if eleccion == "1":
+                alertas_nacional = smn.alertas("alertas")
+                imprimir_alertas_nacionales(alertas_nacional)
                 a = 1
             elif eleccion == "2":
                 a = 1
             
             print_separador()
             
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
         elif eleccion == "3":
             #Imprimir pronóstico extendido
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
             imprimir_extendido(archivos_extendido, ciudad)
-<<<<<<< HEAD:APP Tormenta/Core.py
-            
-        elif eleccion == "4":
-            #Procesamiento de imagen de radar.
-            latitud, longitud = pedir_coordenadas()
-               #34.593056, 58.445746
-                
-            if latitud != 0 and longitud != 0:
-                analisis_foto((-latitud, -longitud))
-                
-            print_separador()
-        
-        elif eleccion == "5":
-            ciudad = get_ciudad()
-            imprimir_actual("actual", ciudad)
-        
-=======
             
             print()
             
@@ -400,7 +268,6 @@ def main():
             ciudad = solicitar_usuario()
             imprimir_actual("actual", ciudad)
             
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:Core.py
         elif eleccion == "6":
             desea_salir = True
         

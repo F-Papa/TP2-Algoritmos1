@@ -27,7 +27,7 @@ def smn_request(diccionario):
             print(f"Error abriendo archivo: {nombre}")"""            
 
 def alertas(nombre_archivo):
-    """Generá una lista con los datos necesarios de cada una de las alertas incluidas en archivo de alertas. 
+    """Generá una lista con los datos necesarios de cada una de las aertas incluidas en archivo de alertas. 
     Precondición: El nombre del archivo que se desea procesar"""
     
     info = []
@@ -87,12 +87,7 @@ def actual(nombre_archivo):
                               "Velocidad_del_viento": elemento_json[i]["weather"]["wind_speed"]})
     return info
 
-<<<<<<< HEAD:APP Tormenta/modulo_proceso_smn.py
-
-def buscar_ubicacion(lista, ciudad):
-=======
 def buscar_por_ubicacion(lista, ciudad):
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:modulo_proceso_smn.py
     """"En base a la información de latitud y longitud o ciudad, busca en una lista si se encuentra el elemento determinado.
     Precondición: 1. Lista con el prónostico extendido
                   2. Latitud del lugar de interés (opcional)
@@ -102,8 +97,4 @@ def buscar_por_ubicacion(lista, ciudad):
     
     for elemento in lista:
         if elemento["Ciudad"] == ciudad:
-<<<<<<< HEAD:APP Tormenta/modulo_proceso_smn.py
             return elemento
-=======
-            return elemento
->>>>>>> 22d7d34eb67646efc3c8f8c17bbd30ad0b0c4c14:modulo_proceso_smn.py
