@@ -12,16 +12,16 @@ def analisis_foto(coordenadas):
     pixeles_totales = 0
     recorte_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(400,20,270,370),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
     
-    corte_punto = analisis.lat_long(coordenadas)
-    provincia = analisis.buscar_provincia(recorte_provincias,corte_punto)
-    zonas = analisis.zonas_provincias(provincia,corte_punto)
+    corte_punto = analisis.lat_long(coordenadas, 812, 627)
+    provincia = analisis.recorte(recorte_provincias,corte_punto)
+    zonas = analisis.zonas_provincias(provincia,corte_punto, )
 
     while not tamaño_es_correcto and entrada != "*":
 
         nombre = input("Ingrese el nombre de la imagen: ")
         imagen,nombre = analisis.verificador(nombre)
 
-        tamaño_es_correcto = analisis.check_tamaño(imagen)
+        tamaño_es_correcto = analisis.check_tamaño(imagen, 812, 627)
 
         if not tamaño_es_correcto:
             print("El tamaño de la imagen no es el esperado (812x627)") 
@@ -38,6 +38,7 @@ def analisis_foto(coordenadas):
     analisis.alertas(pixeles_zonas,provincia)
 
 def menu():
+    """Verifica la entrada del usuario en el menu""" 
     eleccion = "0"
     while eleccion not in "123456": 
         print_opciones()
@@ -47,14 +48,17 @@ def menu():
     return eleccion
 
 def solicitar_usuario():
-    """Le solicita al usuario los datos de úbicación"""
+    """Post-Condicion: Le solicita al usuario los datos de úbicación"""
     return input("¿Podrías indicarnos en qué ciudad te encuentras? -> ").title()
     
 def print_separador(longitud = 20):
+    """Post-Condicion: Imprime una linea de guiones"""
+
     print('-'*longitud)
     print()
 
 def print_opciones():
+    """Post-Condicion: Imprime las opciones del menu principal"""
     
     print("TORMENTA")
     print("--------")
@@ -66,9 +70,13 @@ def print_opciones():
     print("[6] Salir")
 
 def print_bienvenida():
+    """Post-Condicion: Imprime en pantalla la bienvenida deseada"""
     print("\nBienvenido a Tormenta")
 
 def verif_coord(coord_str):
+    """ Pre-Condicion: Recibe una valor de latitud o longitud como string
+        Post-Condicion: Devuelve el string convertido a float solo si esta en formato (-)dd.ddd."""
+
     negativo = True
     error = True
     coord = float(0)
@@ -95,6 +103,8 @@ def verif_coord(coord_str):
     return coord
 
 def get_coord():
+    """Post-Condicion: Devuelve una tupla con 2 floats que pide al usuario (latitud, longitud)"""
+
     print("Porfavor ingrese sus coordenadas")
     lat = float(0)
     lon = float(0)
@@ -113,7 +123,8 @@ def get_coord():
 def imprimir_extendido(lista, ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada
        Precondición: Una lista que contenga el nombre de los archivos que contienen la información del pronóstico extendido;
-                     Latitud y Longitud o Ciudad otorgados por el usuario."""
+                     y una Ciudad otorgada por el usuario."""
+                     
     
     dia_1 = smn.buscar_por_ubicacion(smn.extendido(lista[0]), ciudad)
     dia_2 = smn.buscar_por_ubicacion(smn.extendido(lista[1]), ciudad)
@@ -132,6 +143,7 @@ def imprimir_extendido(lista, ciudad):
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
 
 def imprimir_alertas_nacionales(lista):
+    "Imprime las alertas a nivel nacional obtenidad del Sistema Meteorológico Nacional"
     for i in range(len(lista)):
         zonas = ""
         for clave, elemento in lista[i].items():
@@ -143,9 +155,27 @@ def imprimir_alertas_nacionales(lista):
         print()
         print(lista[i]["Descripción"])
         print("--------")
+    print()
+
+def alertas_cercanas(lista, provincia):
+    """Imprime las alertas emitidas para la pronvincia indicada por el usuario"""
+
+    print(f"En {provincia.title()} hay las siguientes alertas:\n")
+    contador_alertas = 0
+
+    for i in range(len(lista)):
+        for clave, elemento in lista[i].items():
+
+            if clave == "Descripción" and provincia in elemento:
+                print(f"Alerta nro. {contador_alertas+1}: {elemento}\n")
+                contador_alertas+=1
+        
+    
+    if contador_alertas == 0:
+        print("Ninguna")
 
 def imprimir_actual(nombre_archivo,ciudad):
-    """Imprime el pronóstico extendido de la ciudad seleccionada
+    """Imprime el pronóstico extendido de la ciudad seleccionada, devuelve 1 si fue exitoso o 0 si no se encontraron datos de la ciudad pedida
        Precondición: nombre del archivo que contiene el clima actual;
                      Latitud y Longitud o Ciudad otorgados por el usuario."""
     
@@ -163,15 +193,21 @@ def imprimir_actual(nombre_archivo,ciudad):
         else:
             recomendacion = "Mucho cuidado con el calor personas mayores y niños. Tomen mucha agua para evitar golpes de calor."
         
-        print("La temperatura actual en {} es: {}°C. La visibilidad es de {}km y la velocidad del viento es de {}km/m.\n{}\n\n".format(clima_actual["Ciudad"], 
+        print("La temperatura actual en {} ({}) es: {}°C. La visibilidad es de {}km y la velocidad del viento es de {}km/m.\n{}\n".format(clima_actual["Ciudad"],
+                                                                                                                                      clima_actual["Provincia"], 
                                                                                                                                       clima_actual["Temperatura"], 
                                                                                                                                       clima_actual["Visibilidad"], 
                                                                                                                                       clima_actual["Velocidad_del_viento"],
                                                                                                                                       recomendacion))
+        return 1
+    
     else:
         print(f"No se encontraron datos del clima actual en {ciudad}\n")
+        return 0
 
 def main():
+    #Punto de Entrada
+
     urls_smn= {'actual':'https://ws.smn.gob.ar/map_items/weather',
               'especiales':'https://ws.smn.gob.ar/alerts/type/IE',
               'corto_plazo':'https://ws.smn.gob.ar/alerts/type/AC',
@@ -185,21 +221,27 @@ def main():
     
     print_bienvenida()
     
-    ciudad = solicitar_usuario()
+    ciudad = solicitar_usuario() #Solicitud de datos de ciudad al usuario
     
     print_separador()
     
-    imprimir_actual("actual", ciudad)
-       
+    if not imprimir_actual("actual", ciudad):
+        print("\nIngrese sus coordenadas:")
+        lat, lon = get_coord()
+        ciudad = smn.aproximar(lat,lon,"actual")
+        print()
+        imprimir_actual("actual", ciudad)      
+    
     desea_salir = False
     
     while not desea_salir:
         eleccion = menu()
         
         if eleccion == "1":
+            #CSV
+
             dir = input("Ingrese el nombre/directorio del archivo CSV: ")
-            lineas = CSV.cargar_archivo(dir)
-           
+            lineas = CSV.cargar_archivo(dir)         
             
             if len(lineas) > 0:
                 
@@ -226,49 +268,67 @@ def main():
                 print_separador()
                 
         elif eleccion == "2":
+            #Alertas
+
             eleccion = "0"
-            
             while eleccion not in "123":
                 print("[1] Alertas a nivel nacional")
-                print("[2] Alertas locales")
-                print("Ingrese cualquier otra tecla para volver al menu.")
+                print("[2] Alertas por ubicación")
+                print("[3] Volver al menu")
                 eleccion = input()
             
             if eleccion == "1":
+                #Alertas a nivel nacional
+
                 alertas_nacional = smn.alertas("alertas")
                 imprimir_alertas_nacionales(alertas_nacional)
-                a = 1
+
             elif eleccion == "2":
-                
-                print("[1] Buscar por provincia")
-                print("[2] Buscar por coordenadas")
-                print("Ingrese cualquier otra tecla para volver al menu.")
-                eleccion = input()
+                #Alertas cercanas a unas coordenadas
 
-                if eleccion == "1":
-                    provincia = input("Nombre de la provincia: ").title()
+                eleccion = "0"
+                while eleccion not in "123":
+                    print("[1] Buscar por provincia")
+                    print("[2] Buscar por coordenadas")
+                    print("[3] Volver al menu")
+                    eleccion = input()
+
+                if eleccion != "3":
+
+                    if eleccion == "1":
+                        #Buscar por provincia
+
+                        provincia = input("Nombre de la provincia: ").title()
+                                            
+                        if provincia == "Tierra Del Fuego":
+                            provincia = "Tierra del Fuego"
+                        elif provincia == "Santiago Del Estero":
+                            pronvicia = "Santiago del Estero"
+
+                    elif eleccion == "2":
+                        #Buscar por coordenadas
+
+                        lat, lon = get_coord()
+                        
+                        try:
+                            provincia = GEO.get_provincia(lat, lon)
+
+                        except:
+
+                            print("Coordenadas invalidas")
                     
-                    if provincia == "Tierra Del Fuego":
-                        provincia = "Tierra del Fuego"
-                    elif provincia == "Santiago Del Estero":
-                        pronvicia = "Santiago del Estero"
+                    try:
+                        alertas_provincial = smn.alertas("alertas")
+                    
 
-                elif eleccion == "2":
-                    lat, lon = get_coord()
-                    provincia = GEO.get_provincia(lat, lon)
-
-################################
-                #ACA provincia es una string, ya podes llamar a tu funcion con provincia como parametro
-                #...
-                #...
-                #...
-                #...
-#############################
-
-            print_separador()
+                        alertas_cercanas(alertas_provincial, provincia)
+                    
+                    except:
+                        print("\nError, intente nuevamente")
             
         elif eleccion == "3":
             #Imprimir pronóstico extendido
+
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
             imprimir_extendido(archivos_extendido, ciudad)
             
@@ -278,20 +338,26 @@ def main():
             #Procesamiento de imagen de radar.
 
             lat, lon = get_coord()
-   
+
             if lat != 0 and lon !=0:
                 analisis_foto((-lat, -lon))
             
             print_separador()
             
         elif eleccion == "5":
+            #Cambiar de ciudad
+
             ciudad = solicitar_usuario()
-            imprimir_actual("actual", ciudad)
+
+            if not imprimir_actual("actual", ciudad):
+                print("\nIngrese sus coordenadas:")
+                lat, lon = get_coord()
+                ciudad = smn.aproximar(lat,lon,"actual")
+                imprimir_actual("actual", ciudad)
+                
             
         elif eleccion == "6":
             desea_salir = True
         
             
-            
-
 main()
