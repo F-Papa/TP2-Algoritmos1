@@ -51,13 +51,22 @@ def recorte(provincia,recortes_provincias):
             recorte_prov = recortes_provincias[clave]
             return recorte_prov
 
-def zonas_provincias(provincia,alto,corte_radio):
-    altura_provincia = alto - (provincia[1] + provincia[3])
-    altura_provincia  = int(altura_provincia /3)
-    sur = (provincia[0] ,provincia[1] + (2 * altura_provincia ), provincia[2] ,provincia[3])# left, up, right, bottom
-    centro = (provincia[0] , provincia[1] + altura_provincia , provincia[2] , provincia[3] + altura_provincia)
-    norte = (provincia[0] ,provincia[1],provincia[2] ,provincia[3] + (2 * altura_provincia))
-    zonas = {"norte":norte,"centro":centro,"sur":sur,"100km":corte_radio}
+def zonas_provincias(provincia,ALTO,ANCHO,corte_radio):
+    alto_provincia = ALTO - (provincia[1] + provincia[3])
+    alto_provincia  = int(alto_provincia /3)
+    ancho_provincia = ANCHO - (provincia[0] + provincia[2])
+    ancho_provincia  = int(ancho_provincia /3)
+    
+    sur = (provincia[0] + ancho_provincia ,provincia[1] + (2 * alto_provincia ), provincia[2] + ancho_provincia,provincia[3])# left, up, right, bottom
+    centro = (provincia[0] + ancho_provincia, provincia[1] + alto_provincia , provincia[2] + ancho_provincia , provincia[3] + alto_provincia)
+    norte = (provincia[0] + ancho_provincia,provincia[1],provincia[2]+ ancho_provincia,provincia[3] + (2 * alto_provincia))
+    oeste = (provincia[0], provincia[1] + alto_provincia , provincia[2] + (2*ancho_provincia) , provincia[3] + alto_provincia)
+    este = (provincia[0] + (2*ancho_provincia), provincia[1] + alto_provincia , provincia[2] , provincia[3] + alto_provincia)
+    noreste = (provincia[0] + (2*ancho_provincia),provincia[1],provincia[2],provincia[3] +(2 * alto_provincia))
+    noroeste = (provincia[0] ,provincia[1],provincia[2] + (2*ancho_provincia),provincia[3] +(2 * alto_provincia))
+    sureste = (provincia[0] + (2*ancho_provincia),provincia[1] + (2 * alto_provincia),provincia[2],provincia[3])
+    suroeste = (provincia[0],provincia[1] + (2 * alto_provincia),provincia[2] + (2*ancho_provincia),provincia[3])
+    zonas = {"norte":norte,"oeste":oeste,"este":este,"centro":centro,"noreste":noreste,"noroeste":noroeste,"sureste":sureste,"suroeste":suroeste,"sur":sur,"100km a la redonda":corte_radio}
     return zonas
 
 
