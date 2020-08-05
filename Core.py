@@ -4,37 +4,29 @@ import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
 import color_fotos as analisis
 
-def analisis_foto(coordenadas):
+def analisis_foto(coordenadas,provincia):
     nombre,entrada = "", ""
-    tamaño_es_correcto = False
-    rojo = 0
-    magenta = 0
-    pixeles_totales = 0
-    recorte_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(400,20,270,370),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
+    tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
+    ANCHO = 812
+    ALTO = 627
+    recortes_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(405,20,275,375),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
+    corte_radio = analisis.lat_long(coordenadas,ANCHO,ALTO)
+    recorte_prov = analisis.recorte(provincia,recortes_provincias)
+    zonas = analisis.zonas_provincias(recorte_prov,ALTO,ANCHO,corte_radio)
     
-    corte_punto = analisis.lat_long(coordenadas, 812, 627)
-    provincia = analisis.recorte(recorte_provincias,corte_punto)
-    zonas = analisis.zonas_provincias(provincia,corte_punto, )
-
     while not tamaño_es_correcto and entrada != "*":
-
         nombre = input("Ingrese el nombre de la imagen: ")
         imagen,nombre = analisis.verificador(nombre)
-
-        tamaño_es_correcto = analisis.check_tamaño(imagen, 812, 627)
-
+        tamaño_es_correcto = analisis.check_tamaño(imagen,ANCHO,ALTO)
         if not tamaño_es_correcto:
             print("El tamaño de la imagen no es el esperado (812x627)") 
             entrada = input("Si desea salir ingrese *: ")
 
-    if "png" in nombre:
-
+    if "png" in nombre: #Expresion simplificada
         imagen = analisis.png_jpg(nombre,imagen)
 
-    pixeles_zonas = analisis.contador_pixel(pixeles_totales,rojo,magenta,imagen,zonas)
-    
+    pixeles_zonas = analisis.contador_pixel(imagen,zonas)
     print_separador()
-
     analisis.alertas(pixeles_zonas,provincia)
 
 def menu():
@@ -340,7 +332,7 @@ def main():
             lat, lon = get_coord()
 
             if lat != 0 and lon !=0:
-                analisis_foto((-lat, -lon))
+                analisis_foto((-lat, -lon),provincia)
             
             print_separador()
             
