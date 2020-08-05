@@ -1,12 +1,12 @@
 import modulo_csv as CSV
-#import modulo_geo as GEO
+import modulo_geo as GEO
 import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
 import color_fotos as analisis
 
 def analisis_foto(coordenadas):
     nombre,entrada = "", ""
-    tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
+    tamaño_es_correcto = False
     rojo = 0
     magenta = 0
     pixeles_totales = 0
@@ -27,7 +27,7 @@ def analisis_foto(coordenadas):
             print("El tamaño de la imagen no es el esperado (812x627)") 
             entrada = input("Si desea salir ingrese *: ")
 
-    if "png" in nombre: #Expresion simplificada
+    if "png" in nombre:
 
         imagen = analisis.png_jpg(nombre,imagen)
 
@@ -36,9 +36,6 @@ def analisis_foto(coordenadas):
     print_separador()
 
     analisis.alertas(pixeles_zonas,provincia)
-
-def ListadoAlertas():
-    a = 2
 
 def menu():
     eleccion = "0"
@@ -188,13 +185,12 @@ def main():
     
     print_bienvenida()
     
-    ciudad = solicitar_usuario() #Solicitud de datos de ciudad al usuario
+    ciudad = solicitar_usuario()
     
     print_separador()
     
-    imprimir_actual("actual", ciudad) #Imprimir pronóstico actual
-    
-    
+    imprimir_actual("actual", ciudad)
+       
     desea_salir = False
     
     while not desea_salir:
@@ -234,8 +230,8 @@ def main():
             
             while eleccion not in "123":
                 print("[1] Alertas a nivel nacional")
-                print("[2] Alertas cercanas a unas coordenadas")
-                print("[3] Volver al menu")
+                print("[2] Alertas locales")
+                print("Ingrese cualquier otra tecla para volver al menu.")
                 eleccion = input()
             
             if eleccion == "1":
@@ -243,8 +239,32 @@ def main():
                 imprimir_alertas_nacionales(alertas_nacional)
                 a = 1
             elif eleccion == "2":
-                a = 1
-            
+                
+                print("[1] Buscar por provincia")
+                print("[2] Buscar por coordenadas")
+                print("Ingrese cualquier otra tecla para volver al menu.")
+                eleccion = input()
+
+                if eleccion == "1":
+                    provincia = input("Nombre de la provincia: ").title()
+                    
+                    if provincia == "Tierra Del Fuego":
+                        provincia = "Tierra del Fuego"
+                    elif provincia == "Santiago Del Estero":
+                        pronvicia = "Santiago del Estero"
+
+                elif eleccion == "2":
+                    lat, lon = get_coord()
+                    provincia = GEO.get_provincia(lat, lon)
+
+################################
+                #ACA provincia es una string, ya podes llamar a tu funcion con provincia como parametro
+                #...
+                #...
+                #...
+                #...
+#############################
+
             print_separador()
             
         elif eleccion == "3":
@@ -258,7 +278,7 @@ def main():
             #Procesamiento de imagen de radar.
 
             lat, lon = get_coord()
-           #-34.593056, -58.445746     
+   
             if lat != 0 and lon !=0:
                 analisis_foto((-lat, -lon))
             
