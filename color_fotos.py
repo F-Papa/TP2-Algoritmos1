@@ -2,6 +2,8 @@ from PIL import Image
 from PIL import ImageOps
 
 def verificador(nombre):
+    '''pre: necesita el nombre de la imagen y verifica que se pueda abrir, si no puede pide nuevamente el ingreso del nombre
+        post: devuelve la imagen y su nombre'''
     try:
         imagen = Image.open(nombre)
     except:
@@ -10,13 +12,16 @@ def verificador(nombre):
         imagen,nombre = verificador(nombre)      
     return imagen,nombre
 
-def check_tamaño(imagen,ANCHO = 812 ,ALTO = 627):   
+def check_tamaño(imagen,ANCHO = 812 ,ALTO = 627):  
+    ''pre: necesita la imagen y las constantes ANCHO y ALTO y verfica si la imagen cumple con las medidas
+        post: devuelve true si cumple y false si no lo cumple'''
     if imagen.size == (ANCHO, ALTO):
         return True     
     else:
         return False
     
 def png_jpg(nombre,imagen):   #Ahora el nombre es el mismo y solo cambia la extension
+'''necesita la imagen .png y las convirte en .jpg'''
     imagen = imagen.convert('RGB')
     tokens = nombre.split(".png")
     imagen.save(tokens[0]+".jpg")
@@ -24,11 +29,13 @@ def png_jpg(nombre,imagen):   #Ahora el nombre es el mismo y solo cambia la exte
 
 
 def lat_long(coordenadas,ANCHO = 812,ALTO = 627):
+'''pre: necesita la variable coordenada y las constantes ALTO y ANCHO
+        post: devulve una tupla con con los valores para hacer un corte en la imagen de 30x30 con centro en la coordenada '''
     
     LONGITUD = 73.69945905 # longitud de referencia
     LATITUD = 27.301116798 # latitud de referencia 
     PIXEL_DISTANCIA = 0.0272000045 # relacion entre diferencia de latitudes/longitudes y pixeles
-    RADIO = 30  # cuadrado de 20x20 con centro en la cordenada ingresada
+    RADIO = 30  # cuadrado de 30x30 con centro en la cordenada ingresada
     
     diferencia_longitud = LONGITUD - coordenadas[1]
     corte_izquierdo = (diferencia_longitud /PIXEL_DISTANCIA) - RADIO
@@ -46,12 +53,16 @@ def lat_long(coordenadas,ANCHO = 812,ALTO = 627):
 
 
 def recorte(provincia,recortes_provincias):
+ '''pre:necesita la variable provincia y el diccionario recorte_provincias
+        post: devulve la tupla del recorte de la provincia correspondiente segun la clave'''
     for clave in recortes_provincias :
         if clave == provincia:
             recorte_prov = recortes_provincias[clave]
             return recorte_prov
 
 def zonas_provincias(recorte_prov,ALTO,ANCHO,corte_radio):
+'''pre:necesita las variables recorte_prov y corte_radio y las constantes ALTO y ANCHO
+        post: devulve un diccionario con 9 tuplas con los recortes de cada zona'''
     alto_provincia = ALTO - (recorte_prov[1] + recorte_prov[3])
     alto_provincia  = int(alto_provincia /3)
     ancho_provincia = ANCHO - (recorte_prov[0] + recorte_prov[2])
@@ -72,6 +83,8 @@ def zonas_provincias(recorte_prov,ALTO,ANCHO,corte_radio):
 
 
 def contador_pixel(imagen,zonas):
+'''pre: neesita la imagen y el diccionario zonas
+        post: devulve una lista con el nombre de las zonas y una lista con la cantidad de pixeles totales rojo y magentas por zona'''
     pixeles = []
     pixeles_zonas = []
     for zona in zonas.items():
@@ -93,6 +106,9 @@ def contador_pixel(imagen,zonas):
 
 
 def alertas(pixeles_zonas,provincia):
+ '''pre: necesita la lista pixeles_zonas y la variable provincia
+        post: pinta por pantalla si hay o no tormenta segun la cantidad de pixeles totales rojos y magentas
+'''
     print(provincia,":")
     for zona in pixeles_zonas:
         porcentaje = int((zona[1][2] * 1.5)/100)
