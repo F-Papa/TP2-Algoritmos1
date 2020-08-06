@@ -4,8 +4,8 @@ import modulo_graficos as GRAF
 import modulo_proceso_smn as smn
 import color_fotos as analisis
 
-def analisis_foto(lat, lon, actual):
-    provincia = smn.aproximar(lat, lon, actual)
+def analisis_foto(lat, lon):
+    provincia = smn.aproximar(lat, lon, "actual")
     coordenadas = (-lat, -lon)
     nombre,entrada = "", ""
     tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
