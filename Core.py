@@ -304,12 +304,8 @@ def main():
 
                         lat, lon = get_coord()
                         
-                        try:
-                            provincia = GEO.get_provincia(lat, lon)
 
-                        except:
-
-                            print("Coordenadas invalidas")
+                        provincia = GEO.get_provincia(lat, lon)
                     
                     try:
                         alertas_provincial = smn.alertas("alertas")
@@ -334,7 +330,10 @@ def main():
             lat, lon = get_coord()
 
             if lat != 0 and lon !=0:
-                analisis_foto(lat, lon, actual)
+                try:
+                    analisis_foto(lat, lon)
+                except:
+                    print("\nLas coordenadas introducidas no corresponden a la region del mapa")
             
             print_separador()
             

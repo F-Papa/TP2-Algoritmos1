@@ -25,7 +25,7 @@ def extraer_año(linea):
     """ Pre-Condicion: Recibe una lista en la que el primer item es un año (cadena)
         Post-Condicion: Devuelve el año de esa entrada (int)"""
 
-    tokens = linea.split(',')
+    tokens = linea[0].split('/')
     return int(tokens[-1])
 
 def get_año_actual():
