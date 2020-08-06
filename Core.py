@@ -11,7 +11,7 @@ def analisis_foto(lat, lon):
     tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
     ANCHO = 812
     ALTO = 627
-    recortes_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquen":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(405,20,275,375),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
+    recortes_provincias = {"Buenos Aires":(385,210,200,100),"La Pampa":(220,270,420,170),"Rio Negro":(120,405,400,65),"Neuquén":(120,330,570,90),"Mendoza":(145,160,525,240),"San Luis":(245,145,475,305),"Cordoba":(300,50,370,345),"Santa Fe":(405,20,275,375),"Entre Rios":(475,80,230,380),"San Juan":(145,20,540,440)}
     corte_radio = analisis.lat_long(coordenadas,ANCHO,ALTO)
     recorte_prov = analisis.recorte(provincia,recortes_provincias)
     zonas = analisis.zonas_provincias(recorte_prov,ALTO,ANCHO,corte_radio)
