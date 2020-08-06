@@ -10,7 +10,7 @@ def verificador(nombre):
         imagen,nombre = verificador(nombre)      
     return imagen,nombre
 
-def check_tamaño(imagen,ANCHO,ALTO):   
+def check_tamaño(imagen,ANCHO = 812 ,ALTO = 627):   
     if imagen.size == (ANCHO, ALTO):
         return True     
     else:
@@ -23,7 +23,7 @@ def png_jpg(nombre,imagen):   #Ahora el nombre es el mismo y solo cambia la exte
     return imagen    
 
 
-def lat_long(coordenadas,ANCHO,ALTO):
+def lat_long(coordenadas,ANCHO = 812,ALTO = 627):
     
     LONGITUD = 73.69945905 # longitud de referencia
     LATITUD = 27.301116798 # latitud de referencia 
