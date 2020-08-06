@@ -93,7 +93,7 @@ def contador_pixel(imagen,zonas):
 
 
 def alertas(pixeles_zonas,provincia):
-    print(provincia[0],":")
+    print(provincia,":")
     for zona in pixeles_zonas:
         porcentaje = int((zona[1][2] * 1.5)/100)
         print(zona[0],":")
