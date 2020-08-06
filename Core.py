@@ -80,26 +80,29 @@ def verif_coord(coord_str):
         
     coord_str = coord_str.lstrip('-')
     
-    if len(coord_str) == 6:
-        error = False
+    if coord_strlen(coord_str) == 6 and coord_str(2) == '.' and (coords_str.replace('.', '')).isnumeric():
+        
         
         try:
             coord = float(coord_str)
-            if negativo:
-                coord = -coord
+            if coord <= 90:
+                if negativo:
+                    coord = -coord
+                    error = False
+            else:
+                print("Formato incorrecto, recuerde que este es: (-)dd.ddd")
+                return 0
             
         except:
-            error = True    
-            
-    if error:
-        print("Formato incorrecto, recuerde que este es: (-)dd.ddd")
+            print("Error"
+        
                 
     return coord
 
 def get_coord():
     """Post-Condicion: Devuelve una tupla con 2 floats que pide al usuario (latitud, longitud)"""
 
-    print("Porfavor ingrese sus coordenadas")
+    print("Porfavor ingrese sus coordenadas. Para volver ingrese *")
     lat = float(0)
     lon = float(0)
     eleccion = ""
