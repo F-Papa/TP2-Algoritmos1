@@ -5,7 +5,7 @@ import modulo_proceso_smn as smn
 import color_fotos as analisis
 
 def analisis_foto(lat, lon):
-    provincia = GEO.get_provincia(latitud, longitud)
+    provincia = GEO.get_provincia(lat, lon)
     coordenadas = (-lat, -lon)
     nombre,entrada = "", ""
     tamaño_es_correcto = False #Cambio a Bool y renombro la variable y la funcion para que sea mas legible
