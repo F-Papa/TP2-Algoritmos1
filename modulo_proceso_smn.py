@@ -86,8 +86,7 @@ def aproximar(lat, lon, nombre_archivo):
                     elemento_a_devolver = elemento_json[i]["name"]
                     primera_iteracion = False
 
-    return elemento_a_devolver
-                
+    return elemento_a_devolver               
 
 def actual(nombre_archivo):
     """Generá una lista con los datos necesarios de cada una de las ciudades incluidas en los archivo actual. 
@@ -120,5 +119,5 @@ def buscar_por_ubicacion(lista, ciudad):
     Postcondición: Un diccionario con la información brindada."""
     
     for elemento in lista:
-        if elemento["Ciudad"] == ciudad:
+        if elemento["Ciudad"].upper() == ciudad.upper():
             return elemento

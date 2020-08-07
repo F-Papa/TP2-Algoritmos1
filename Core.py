@@ -69,40 +69,35 @@ def print_bienvenida():
 
 def verif_coord(coord_str):
     """ Pre-Condicion: Recibe una valor de latitud o longitud como string
-        Post-Condicion: Devuelve el string convertido a float solo si esta en formato (-)dd.ddd."""
+        Post-Condicion: Devuelve el string convertido a float y un True si esta en formato (-)dd.ddd. En caso contrario devuelve 0 y False"""
 
     negativo = True
     coord = float(0)
+    exito = False
     
     if coord_str == coord_str.lstrip('-'):
         negativo = False
         
     coord_str = coord_str.lstrip('-')
     
-    if len(coord_str) == 6 and coord_str[2] == '.' and (coord_str.replace('.', '')).isnumeric():
+    if len(coord_str) == 6 and coord_str[2] == '.' and (coord_str.replace('.', '')).isnumeric():      
         
-        
-        try:
-            coord = float(coord_str)
-            if coord <= 90:
-                
-                if negativo:
-                    coord = -coord
-                return coord
-
-
-            else:
-                print("Las coordenadas solo pueden ir desde -90.000 hasta 90.000")
-                return 0
+        coord = float(coord_str)
+        if coord <= 90:
+            if negativo:
+                coord = -coord
             
-        except:
-            print("Error")
-   
-    else:
-        print("Formato incorrecto, recuerde que este es: (-)dd.ddd")
-        return 0
-                
+            exito = True
+
+        else:
+            print("Las coordenadas solo pueden ir desde -90.000 hasta 90.000")
+        
+        
     
+    elif coord_str != "*":
+        print("Formato incorrecto, recuerde que este es: (-)dd.ddd")
+
+    return coord, exito  
 
 def get_coord():
     """Post-Condicion: Devuelve una tupla con 2 floats que pide al usuario (latitud, longitud)"""
@@ -112,13 +107,15 @@ def get_coord():
     lon = float(0)
     eleccion = ""
     
-    while lat == 0 and eleccion != "*":
+    exito = False
+    while not exito and eleccion != "*":
         eleccion = input("Latitud: ")
-        lat = verif_coord(eleccion)
-        
-    while lon == 0 and eleccion != "*":
+        lat, exito = verif_coord(eleccion)
+
+    exito = False    
+    while not exito and eleccion != "*":
         eleccion = input("Longitud: ")
-        lon = verif_coord(eleccion)
+        lon, exito = verif_coord(eleccion)
          
     return (lat, lon)
 
@@ -144,6 +141,8 @@ def imprimir_extendido(lista, ciudad):
         
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
 
+        ciudad = smn.aproximar("")
+
 def imprimir_alertas_nacionales(lista):
     "Imprime las alertas a nivel nacional obtenidad del Sistema Meteorológico Nacional"
     for i in range(len(lista)):
@@ -161,20 +160,20 @@ def imprimir_alertas_nacionales(lista):
 
 def alertas_cercanas(lista, provincia):
     """Imprime las alertas emitidas para la pronvincia indicada por el usuario"""
-
+    
     print(f"En {provincia.title()} hay las siguientes alertas:\n")
     contador_alertas = 0
 
     for i in range(len(lista)):
         for clave, elemento in lista[i].items():
 
-            if clave == "Descripción" and provincia in elemento:
+            if clave == "Descripción" and provincia.upper() in elemento.upper():
                 print(f"Alerta nro. {contador_alertas+1}: {elemento}\n")
                 contador_alertas+=1
         
     
     if contador_alertas == 0:
-        print("Ninguna")
+        print("Ninguna\n")
 
 def imprimir_actual(nombre_archivo,ciudad):
     """Imprime el pronóstico extendido de la ciudad seleccionada, devuelve 1 si fue exitoso o 0 si no se encontraron datos de la ciudad pedida
@@ -328,7 +327,8 @@ def main():
             #Imprimir pronóstico extendido
 
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
-            imprimir_extendido(archivos_extendido, ciudad)
+            if not imprimir_extendido(archivos_extendido, ciudad):
+                ciudad
             
             print()
             
@@ -337,11 +337,11 @@ def main():
 
             lat, lon = get_coord()
 
-            if lat != 0 and lon !=0:
-                try:
-                    analisis_foto(lat, lon)
-                except:
-                    print("\nLas coordenadas introducidas no corresponden a la region del mapa")
+            
+            try:
+                analisis_foto(lat, lon)
+            except:
+                print("\nLas coordenadas introducidas no corresponden a la region del mapa")
             
             print_separador()
             
