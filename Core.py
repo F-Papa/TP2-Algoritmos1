@@ -31,11 +31,11 @@ def analisis_foto(lat, lon):
     print_separador()
     analisis.alertas(pixeles_zonas,provincia)
 
-def menu():
+def menu(archivos_encontrados):
     """Verifica la entrada del usuario en el menu""" 
     eleccion = "0"
     while eleccion not in "123456": 
-        print_opciones()
+        print_opciones(archivos_encontrados)
         eleccion = input()
         print()
     
@@ -51,16 +51,28 @@ def print_separador(longitud = 20):
     print('-'*longitud)
     print()
 
-def print_opciones():
-    """Post-Condicion: Imprime las opciones del menu principal"""
+def print_opciones(archivos_encontrados):
+    
+    """Pre-Condicion: archivos_encontrados, true si el programa consiguio acceder a los datos del SMN, false de caso contrario
+    Post-Condicion: Imprime las opciones del menu principal disponibles para el estado del programa"""
     
     print("TORMENTA")
     print("--------")
-    print("[1] Analizar un archivo CSV")
-    print("[2] Alertas")
-    print("[3] Pronostico extendido para una ciudad")
-    print("[4] Analizar una imagen de radar")
-    print("[5] Cambiar de ciudad")
+    
+    if archivos_encontrados:
+        print("[1] Analizar un archivo CSV")
+        print("[2] Alertas")
+        print("[3] Pronostico extendido para una ciudad")
+        print("[4] Analizar una imagen de radar")
+        print("[5] Cambiar de ciudad")
+
+    else:
+        print("[1] Analizar un archivo CSV")
+        print("[2] NO DISPONIBLE")
+        print("[3] NO DISPONIBLE")
+        print("[4] Analizar una imagen de radar")
+        print("[5] NO DISPONIBLE")
+    
     print("[6] Salir")
 
 def print_bienvenida():
@@ -224,27 +236,30 @@ def main():
               'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
     
+    print_bienvenida() 
+    
+    archivos_encontrados = True
+
     try:
 
         smn.smn_request(urls_smn)
+        ciudad = solicitar_usuario()
+    
+        print_separador()
+        
+        if not imprimir_actual("actual", ciudad):
+            imprimir_actual_aprox()  
     
     except:
 
-        print("Error abriendo los datos de clima")
+        print("Error abriendo los datos de clima, algunas funciones no estarán disponibles")
+        archivos_encontrados = False
 
-    print_bienvenida() 
-    
-    ciudad = solicitar_usuario()
-    
-    print_separador()
-    
-    if not imprimir_actual("actual", ciudad):
-        imprimir_actual_aprox()       
-    
+      
     desea_salir = False
     
     while not desea_salir:
-        eleccion = menu()
+        eleccion = menu(archivos_encontrados)
         
         if eleccion == "1":
             #CSV
@@ -276,7 +291,7 @@ def main():
                 print(GRAF.Color.RESET)
                 print_separador()
                 
-        elif eleccion == "2":
+        elif eleccion == "2" and archivos_encontrados:
             #Alertas
 
             eleccion = "0"
@@ -324,7 +339,7 @@ def main():
                     except:
                         print("\nError, intente nuevamente")
             
-        elif eleccion == "3":
+        elif eleccion == "3" and archivos_encontrados:
             #Imprimir pronóstico extendido
 
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
@@ -344,7 +359,7 @@ def main():
             
             print_separador()
             
-        elif eleccion == "5":
+        elif eleccion == "5" and archivos_encontrados:
             #Cambiar de ciudad
 
             ciudad = solicitar_usuario()
@@ -353,7 +368,6 @@ def main():
                 imprimir_actual_aprox()
                           
         elif eleccion == "6":
-            desea_salir = True
-        
+            desea_salir = True      
             
 main()
