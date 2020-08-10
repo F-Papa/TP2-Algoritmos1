@@ -141,8 +141,6 @@ def imprimir_extendido(lista, ciudad):
         
         print(f"No se encontraron datos del clima extendido en {ciudad}\n")
 
-        ciudad = smn.aproximar("")
-
 def imprimir_alertas_nacionales(lista):
     "Imprime las alertas a nivel nacional obtenidad del Sistema Meteorológico Nacional"
     for i in range(len(lista)):
@@ -206,6 +204,14 @@ def imprimir_actual(nombre_archivo,ciudad):
         print(f"No se encontraron datos del clima actual en {ciudad}\n")
         return 0
 
+def imprimir_actual_aprox():
+    lat, lon = get_coord()
+    ciudad = smn.aproximar(lat,lon,"actual")
+    print()
+    imprimir_actual("actual", ciudad)  
+
+    return ciudad
+
 def main():
     #Punto de Entrada
 
@@ -220,18 +226,14 @@ def main():
     
     smn.smn_request(urls_smn)
     
-    print_bienvenida()
+    print_bienvenida() 
     
-    ciudad = solicitar_usuario() #Solicitud de datos de ciudad al usuario
+    ciudad = solicitar_usuario()
     
     print_separador()
     
     if not imprimir_actual("actual", ciudad):
-        print("\nIngrese sus coordenadas:")
-        lat, lon = get_coord()
-        ciudad = smn.aproximar(lat,lon,"actual")
-        print()
-        imprimir_actual("actual", ciudad)      
+        imprimir_actual_aprox()       
     
     desea_salir = False
     
@@ -300,23 +302,16 @@ def main():
                         #Buscar por provincia
 
                         provincia = input("Nombre de la provincia: ").title()
-                                            
-                        if provincia == "Tierra Del Fuego":
-                            provincia = "Tierra del Fuego"
-                        elif provincia == "Santiago Del Estero":
-                            pronvicia = "Santiago del Estero"
 
                     elif eleccion == "2":
                         #Buscar por coordenadas
 
-                        lat, lon = get_coord()
-                        
+                        lat, lon = get_coord()                       
 
                         provincia = GEO.get_provincia(lat, lon)
                     
                     try:
-                        alertas_provincial = smn.alertas("alertas")
-                    
+                        alertas_provincial = smn.alertas("alertas")                   
 
                         alertas_cercanas(alertas_provincial, provincia)
                     
@@ -327,16 +322,14 @@ def main():
             #Imprimir pronóstico extendido
 
             archivos_extendido = ["pronostico_1dia", "pronostico_2dias", "pronostico_3dias"]
-            if not imprimir_extendido(archivos_extendido, ciudad):
-                ciudad
-            
+            imprimir_extendido(archivos_extendido, ciudad)
+      
             print()
             
         elif eleccion == "4":
             #Procesamiento de imagen de radar.
 
             lat, lon = get_coord()
-
             
             try:
                 analisis_foto(lat, lon)
@@ -351,12 +344,8 @@ def main():
             ciudad = solicitar_usuario()
 
             if not imprimir_actual("actual", ciudad):
-                print("\nIngrese sus coordenadas:")
-                lat, lon = get_coord()
-                ciudad = smn.aproximar(lat,lon,"actual")
-                imprimir_actual("actual", ciudad)
-                
-            
+                imprimir_actual_aprox()
+                          
         elif eleccion == "6":
             desea_salir = True
         

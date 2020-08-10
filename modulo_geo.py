@@ -1,6 +1,5 @@
 from geopy.geocoders import Nominatim
 from urllib.request import urlopen
-#import json
 
 def get_provincia(latitud, longitud):
    
@@ -29,4 +28,4 @@ def get_provincia(latitud, longitud):
         if item in provincias:
             return item
 
-        
+get_provincia(-34.481,  -58.494)

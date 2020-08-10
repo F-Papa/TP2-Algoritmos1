@@ -61,6 +61,7 @@ def get_promedio(archivo, posicion_valor, años_a_retroceder=0):
     
     sumatoria = float(0)
     contador_items = float(0)
+
     lista_a_devolver = []
     lista_años = []
     

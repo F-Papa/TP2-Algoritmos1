@@ -49,7 +49,7 @@ def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", color = C
     for j in range(len(eje_horizontal)):
 
         #Interpretacion color
-        if color == "ARCOIRIS":
+        if color == Color.ARCOIRIS:
             if i < len(colores)-1:
                 i+=1
             else:
@@ -71,3 +71,4 @@ def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", color = C
     #Resetea el color a blanco   
     print (Color.RESET)   
     return 1
+
