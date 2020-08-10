@@ -29,6 +29,7 @@ def get_max_min(valores):
     
     return (max, min)
 
+
 def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", color = Color.RESET):
     """Pre-Condicion: Recibe a las listas eje_vertical (cualquier tipo) y eje_horizontal (numerico). El usuario tiene la opcion
     de agregar un sufijo/unidad (unidad_medicion) y un color (Color.ROJO, Color.AZUL, Color.CYAN, Color.VERDE, Color.ARCOIRIS, Color.RESET).
@@ -64,11 +65,13 @@ def grafico_barras(eje_vertical, eje_horizontal, unidad_medicion = "", color = C
         if eje_horizontal[j] == 0:
            print(eje_vertical[j], " ", eje_horizontal[j], unidad_medicion)
            
-        else:
+        else:   
             unidades = round((eje_horizontal[j]-max_min[1])/escala)
             print(eje_vertical[j], " ", "█"*(unidades+3), eje_horizontal[j],unidad_medicion)
 
     #Resetea el color a blanco   
     print (Color.RESET)   
     return 1
+
+
 

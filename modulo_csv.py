@@ -11,13 +11,15 @@ def get_max(archivo, posicion_valor, años_a_retroceder = 0):
     valores = csv.reader(archivo)
     next(valores)
     max = float(0)
+    primera_iteracion = True
 
     for linea in valores:
         año_linea = extraer_año(linea)
 
         if años_a_retroceder > (año_actual - año_linea):
-            if max < float(linea[posicion_valor]):
+            if max < float(linea[posicion_valor]) or primera_iteracion:
                 max = float(linea[posicion_valor])
+                primera_iteracion = False
     
     return max
 
@@ -63,7 +65,7 @@ def get_promedio(archivo, posicion_valor, años_a_retroceder=0):
     contador_items = float(0)
 
     lista_a_devolver = []
-    lista_años = []
+    lista_años = []         
     
     año_actual = get_año_actual()
     contador_años = 0

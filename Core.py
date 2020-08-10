@@ -153,7 +153,7 @@ def imprimir_alertas_nacionales(lista):
         print("Zonas afectadas: {}.".format(zonas[:-2]))
         print()
         print(lista[i]["Descripción"])
-        print("--------")
+        print_separador()
     print()
 
 def alertas_cercanas(lista, provincia):

@@ -27,5 +27,3 @@ def get_provincia(latitud, longitud):
 
         if item in provincias:
             return item
-
-get_provincia(-34.481,  -58.494)
