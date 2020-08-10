@@ -224,8 +224,14 @@ def main():
               'pronostico_3dias':'https://ws.smn.gob.ar/map_items/forecast/3',
               'otros_pronosticos':'https://ws.smn.gob.ar/forecast/'}
     
-    smn.smn_request(urls_smn)
+    try:
+
+        smn.smn_request(urls_smn)
     
+    except:
+
+        print("Error abriendo los datos de clima")
+
     print_bienvenida() 
     
     ciudad = solicitar_usuario()
